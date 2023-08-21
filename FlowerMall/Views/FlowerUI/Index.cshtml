@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Main_body.cshtml";
+
+    <link href="~/Content/FlowerUI/mainpage.css" rel="stylesheet" />
+    <link href="~/Content/FlowerUI/Search_Top.css" rel="stylesheet" />
+}
+
+<div class="Main-container">
+
+    <div>
+        <div class="tool_logo">
+            <a href="/FlowerUI/Index" title="花语首页，最美的花和最美的你">
+                <img src="~/Images/花语logo.png" />
+            </a>
+        </div>
+        <div class="tool_search">
+            <form action="/flowerui/Search">
+                <div class="Search_Area">
+                    <input type="text" name="spname" class="Search_Input" placeholder="请输入商品名" />
+                    <button class="Search_Button">搜索</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="tool_but">
+
+        </div>
+
+    </div>
+
+    @*<div>
+        <input type="text" id="user_area" />
+        <button onclick="mapajax()">测试</button>
+    </div>*@
+
+    @*标题*@
+    <a class="main_href" href="~/flowerui/Search?spname=爱情">爱情鲜花</a> <span>&nbsp;|&nbsp;送·让你怦然心动的人</span>
+    <div class="main_Item">
+        @*左边*@
+        <div class="container_left">
+            <a href="~/flowerui/Search?spname=爱情">
+                <img height="100%;" src="~/Images/GoodsInfo/lovemain.jpg" />
+            </a>
+        </div>
+        @*右边*@
+        <div class="container_right">
+            @*循环部分*@
+            @for (int i = 0; i < ViewBag.LoveInfo.Count && i < 8; i++)
+            {
+                <a href="/FlowerUI/details/@ViewBag.LoveInfo[i].GoodID">
+                    <div class="contRight_Item">
+                        <div style="width: 200px;height: 250px;margin: 0px auto;overflow:hidden">
+                            <img style="width:250px;height:250px;margin-left: -25px;" src="@ViewBag.LoveInfo[i].GoodMainImg" />
+                        </div>
+                        <br />
+                        <span class="con_goodname">@Html.Raw(ViewBag.LoveInfo[i].GoodName)</span>
+                        <span>@ViewBag.LoveInfo[i].GoodPrice</span>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+
+    <a class="main_href" href="~/flowerui/Search?spname=亲情">亲情鲜花</a> <span>&nbsp;|&nbsp;赠·令你值的感恩的人</span>
+    <div class="main_Item">
+        @*左边*@
+        <div class="container_left">
+            <a href="~/flowerui/Search?spname=亲情">
+                <img height="100%;" src="~/Images/GoodsInfo/affemain.png" />
+            </a>
+        </div>
+        @*右边*@
+        <div class="container_right">
+            @*循环部分*@
+            @for (int i = 0; i < ViewBag.AffeInfo.Count && i < 8; i++)
+            {
+                <a href="/FlowerUI/details/@ViewBag.AffeInfo[i].GoodID">
+                    <div class="contRight_Item">
+                        <div style="width: 200px;height: 250px;margin: 0px auto;overflow:hidden">
+                            <img style="width:250px;height:250px; margin-left: -25px;" src="@ViewBag.AffeInfo[i].GoodMainImg" />
+                        </div>
+                        <br />
+                        <span class="con_goodname">@Html.Raw(ViewBag.AffeInfo[i].GoodName)</span>
+                        <span>@ViewBag.AffeInfo[i].GoodPrice</span>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=这里输入AK"></script>
+<script>
+    function mapajax() {
+        //alert("准备执行ajax")
+        var area = $("#user_area").val();
+        var sarea = encodeURIComponent(area);
+        var httpUrl = 'https://api.map.baidu.com/geocoding/v3/?address=' + sarea + '&output=json&ak=这里输入AK&callback=showLocation';
+        $.ajax({
+            url: httpUrl,
+            type: "get",
+            contentType: "application/json",
+            dataType:"JSONP",
+            async: true,
+            success: function (msg) {
+                console.log(msg);
+                //var jsonstr = JSON.stringify(msg);
+                //console.log(jsonstr);
+                alert(area +'的坐标信息如下：\n经度为' + msg.result.location.lng +'\n维度为' + msg.result.location.lat);
+                
+            }, error: function (data) {
+                alert("Ajax执行失败");
+                console.log(data);
+            }
+        })
+
+    }
+
+</script>

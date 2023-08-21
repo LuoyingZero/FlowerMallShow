@@ -1,0 +1,410 @@
+﻿@using FlowerMall.Models;
+@using PagedList.Mvc;
+@model MyPageList
+
+@{
+    ViewBag.Title = ViewBag.gooddata.GoodName;
+    Layout = "~/Views/Shared/Main_body.cshtml";
+    <link href="~/Content/FlowerUI/details.css" rel="stylesheet" />
+    <style>
+        /*分页按钮区*/
+        .pagination-container {
+            text-align: right;
+            width: 100%;
+            margin: 20px 0px;
+            padding-right: 3%;
+        }
+
+        .pagination {
+            display: block;
+        }
+
+        li {
+            width: 30px;
+            height:30px;
+            display: inline-block;
+            border: 1px solid gray;
+            text-align: center;
+            margin: 0px 3px;
+            line-height: 28px;
+            /*border-radius: 5px;*/
+        }
+
+            li a {
+                font-size: 18px;
+                color: black;
+            }
+
+        .active {
+            background: #ff0036;
+            color: white;
+        }
+    </style>
+}
+<div id="float_area">
+    <div id="float_area_pay">
+        <span id="pay_id" style="display: none;"></span>
+        <span class="pay_tit">选择收货地址</span>
+        <select name="rece" class="rece_select" onchange="receSelect()">
+            @{
+                if (ViewBag.UserRece != null)
+                {
+                    foreach (var item in ViewBag.UserRece as List<tb_ReceAddress>)
+                    {
+                        <option value="@item.ReceID">
+                            [姓名：@item.ReceName] [收货地址：@item.ReceAddr]
+                        </option>
+                    }
+                }
+            }
+            <option value="0">
+                使用临时收货地址
+            </option>
+        </select>
+        <br />
+        <div>
+            <p>
+                <span class="rece_span">收货人：</span>
+                <input type="text" class="rece_input" id="rece_name" maxlength="18" placeholder="请输入收件人的姓名" />
+            </p>
+            <p>
+                <span class="rece_span">手机号：</span>
+                <input type="text" class="rece_input" id="rece_tel" oninput="value=value.replace(/[^0-9]+$/,'')" maxlength="11" placeholder="请输入11位的手机号码" />
+            </p>
+            <p>
+                <span class="rece_span">收货地址：</span>
+                <input type="text" class="rece_input" id="rece_area" maxlength="30" placeholder="请使用真实收货地址!!!" />
+            </p>
+        </div>
+        <div style="text-align:right;">
+            <button id="pay_btn" class="pay_btn btn btn-primary" onclick="buyshop()">确定</button>
+            <button class="pay_btn btn btn-secondary" onclick="CloseArea()">取消</button>
+        </div>
+    </div>
+</div>
+
+<div class="shop_show">
+    <div class="shop_left">
+        <img style="height:450px;width:450px;" src="@ViewBag.gooddata.GoodDataImg" />
+    </div>
+    <div class="shop_right">
+        <span class="shop_name" style="">@ViewBag.gooddata.GoodName</span><br />
+        <div>
+            <span>促销价</span>&nbsp;&nbsp;
+            <span style="color:red;">￥</span>
+            <span style="color:red;font-size:25px;">@ViewBag.gooddata.GoodPrice</span>
+        </div>
+        <div>
+            运费<span style="padding: 0px 30px;">8.00</span>全场满49元包邮
+        </div>
+        <div>
+            花语<span style="padding-left:25px;line-height: 0px;">@ViewBag.gooddata.FlowerLanguage</span>
+        </div>
+        <div>
+            月销量<span style="color:red;padding:0px 12px;">@ViewBag.gooddata.GoodMsales</span>
+            总销量<span style="color:red;padding:0px 12px;">@ViewBag.gooddata.GoodMsales</span>
+        </div>
+        <span style="padding-right: 25px;">数量</span>
+        <span class="tb-amount-widget mui-amount-wrap">
+            <input id="buyNum" type="number" class="tb-text" value="1" maxlength="3" title="请输入购买量">
+            <span class="mui-amount-btn">
+                <span class="mui-amount-increase" onclick="AddNum()">+</span>
+                <span class="mui-amount-decrease" onclick="DelNum()" style="padding-left: 2px;">-</span>
+            </span>
+            <span class="mui-amount-unit">件</span>
+        </span>
+        <span style="padding:0px 20px;">库存</span><span id="spStock">@ViewBag.gooddata.GoodStock</span><br />
+
+        <button onclick="ShowArea()" class="buybutton">立即购买</button>
+        <button onclick="insertshop()" class="cartbutton">加入购物车</button>
+        <br />
+        服务承诺：<span class="fuwu">支持七天无理由退换</span><span class="fuwu">正品保证</span><span class="fuwu">极速退款</span>
+
+
+    </div>
+</div>
+
+<div class="bottomArea">
+
+    <div class="buttArea">
+        <div class="buttArea_xuan">
+            @*左边信息展示区域*@
+            <div class="showCard">
+
+                <div class="showCard_title">
+                    相关宝贝推荐
+                </div>
+
+                @*循环展示*@
+                @for (int i = 0; i < 3; i++)
+                {
+                    <a href="/FlowerUI/details/@ViewBag.recogood[i].GoodID" title="@ViewBag.recogood[i].GoodName ">
+                        <div class="showCard_Item">
+                            <div>
+                                <img src="@ViewBag.recogood[i].GoodMainImg" />
+                            </div>
+                            <div class="showCard_ItemText">
+                                <span class="showCard_Item_tit">@ViewBag.recogood[i].GoodName</span>
+                                <span style="color:dimgray;margin-right:-10px;">￥</span>
+                                <span class="showCard_Item_price">@ViewBag.recogood[i].GoodPrice</span>
+                            </div>
+                        </div>
+                    </a>
+                }
+
+
+            </div>
+
+            <div class="showCard">
+                <div class="showCard_title">
+                    收藏商品到手机
+                </div>
+                <div>
+                    <p>手机扫描二维码进行购买</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="buttArea_comm">
+            <div class="buttArea_top">
+                <div class="butt_Tag">
+                    累计评价
+                    <span style=""></span>
+                </div>
+                <div class="lableArea">
+                    <div style="width:100px;float:left;padding:10px;text-align:center;">
+                        购买热度
+                        <br />
+                        <span class="showCard_Item_price">4.9</span>
+                    </div>
+                    <div style="display:flex;float:left;padding:10px;">
+                        <div class="butt_lable" id="thetag_0">新鲜保障</div>
+                        <div class="butt_lable" id="thetag_1">外观设计好看</div>
+                        <div class="butt_lable" id="thetag_2">物流运输好</div>
+                        <div class="butt_lable" id="thetag_3">包装精致</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <!--评论块-->
+                @{
+                    if (Model.commlist.Count > 0)
+                    {
+                        foreach (var item in Model.commlist)
+                        {
+                            <div class="Comm_Item">
+                                <div class="Comm_ItemText">
+                                    @item.CommText
+                                </div>
+                                <div class="Comm_Item_data">
+                                    <span>@item.CommTime.ToString().Replace("00:00:00", "")</span>
+                                    <span style="float: right;">@item.UserName</span>
+                                </div>
+                            </div>
+                        }
+                        <div class="Comm_Item">
+                            <div style="height:60px;padding-left: 10px;">
+                                购买商品后就可以进行评价了
+                            </div>
+                            <div class="Comm_Item_data">
+                                <span id="HitAPI">我们奋力前行，逆水行舟，被不断向后推，直至回到往昔岁月。</span>
+                            </div>
+                        </div>
+                        @Html.PagedListPager(Model.commlist, page => Url.Action("Details/" + Model.commlist[0].GoodID + "/", new { page }));
+                    }
+                    else
+                    {
+                        <div class="Comm_Item">
+                            <div style="height:60px;">
+                                该商品还没有评价
+                            </div>
+                            <div class="Comm_Item_data">
+                                <span id="HitAPI">我们奋力前行，逆水行舟，被不断向后推，直至回到往昔岁月。</span>
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+@*<dl>
+        <dt>
+            <img src="~/Images/GoodsInfo/香槟玫瑰.jpg" />
+        </dt>
+        <dd class="showCard_Item_tit">
+            <span>商品名称六字...</span>
+        </dd>
+        <dd class="showCard_Item_price">
+            <span>￥:</span>
+            <span>23.00</span>
+        </dd>
+        <dd>
+            <span style="color:gray">月销量</span>
+            <span class="card_mon">2</span>
+        </dd>
+    </dl>*@
+
+<script type="text/javascript">
+    $(function () {
+        RendTag();
+    });
+
+    function AddNum() {
+        var num = $("#buyNum").val();
+        num++;
+        $("#buyNum").val(num);
+    }
+    function DelNum() {
+        var num = $("#buyNum").val();
+        if (num > 1) {
+            num--;
+        }
+        $("#buyNum").val(num);
+    }
+    //购买验证·展示收货区域
+    function ShowArea() {
+        //判断是否登录
+        var gid = @ViewBag.gooddata.GoodID;//商品id
+        var gnum = $("#buyNum").val();//购买数量
+        //document.getElementsByClassName("rece_input").setAttribute("disabled", true);
+
+        $.ajax({
+            url: "/FlowerUI/ReBuy",
+            type: "post",
+            data: { "gid": gid, "gnum": gnum },
+            success: function (result) {
+                console.log(result);
+                if (result == "未登录") {
+                    alert("请先登录！");
+                }
+                else if (result == "notkc") {
+                    alert("无法购买，库存不足")
+                }
+                else if (result == "true") {
+                    //展示选择收货地址区域
+                    document.getElementById("float_area").style.display = "block";
+                    //禁止操作输入框
+                    document.getElementById("rece_name").setAttribute("disabled", true);
+                    document.getElementById("rece_tel").setAttribute("disabled", true);
+                    document.getElementById("rece_area").setAttribute("disabled", true);
+                    receSelect();
+                }
+            }
+        });
+
+    }
+    function CloseArea() {
+        document.getElementById("float_area").style.display = "none";
+    }
+    //购买功能
+    function buyshop() {
+        var gid = @ViewBag.gooddata.GoodID;//商品id
+        var gnum = $("#buyNum").val();//购买数量
+        //获取收货人信息
+        var rece_name = $("#rece_name").val();
+        var rece_tel = $("#rece_tel").val();
+        var rece_area = $("#rece_area").val();
+        if (rece_name.length >= 2 && rece_name.length <= 20 && rece_tel.length == 11 && rece_area.length >= 6  && rece_area.length <= 30) {
+            $.ajax({
+                url: "/FlowerUI/AloneBuy",
+                type: "post",
+                data: { "gid": gid, "gnum": gnum ,"rece_name": rece_name, "rece_tel": rece_tel, "rece_area": rece_area },
+                success: function (result) {
+                    console.log(result);
+                    if (result == "未登录") {
+                        alert("请先登录！");
+                    }
+                    else if (result == "无库存") {
+                        alert("无法购买，库存不足")
+                    }
+                    else if (result == "true") {
+                        alert('订单创建成功，请尽快付款');
+                        window.location.href = "/FlowerUI/order";
+                    }
+                }
+            });
+        } else {
+            if (rece_name.length < 2) {
+                alert('请输入2至18位的收件人姓名')
+            } else if (rece_tel.length != 11) {
+                alert('请输入11位的收件人手机号码')
+            } else if (rece_area.length < 6) {
+                alert('请输入6至30位的收件人地址');
+            }
+        }
+    }
+    //加入购物车
+    function insertshop(id) {
+        var gid = @ViewBag.gooddata.GoodID;
+        var gnum = $("#buyNum").val();
+        $.ajax({
+            url: "/FlowerUI/InsertShop",
+            type: "post",
+            data: { "gid": gid, "gnum": gnum },
+            success: function (result) {
+                console.log(result);
+                if (result == "未登录") {
+                    alert("请先登录！");
+                }
+                else if (result == "无库存") {
+                    alert("加入购物车失败，库存不足")
+                }
+                else if (result == "true") {
+                    alert("宝贝已经成功进入购物车啦");
+                } else {
+                    alert("未知原因，加入失败");
+                }
+            }
+        });
+    }
+
+    //切换收货地址
+    function receSelect() {
+        var rid = $(".rece_select").val();
+        //alert(rid);
+        if (rid == "0") {
+            //alert('123');
+            document.getElementById("rece_name").removeAttribute("disabled");
+            document.getElementById("rece_tel").removeAttribute("disabled");
+            document.getElementById("rece_area").removeAttribute("disabled");
+            //清除默认信息
+            $("#rece_name").val("");
+            $("#rece_tel").val("");
+            $("#rece_area").val("");
+        } else {
+            document.getElementById("rece_name").setAttribute("disabled", true);
+            document.getElementById("rece_tel").setAttribute("disabled", true);
+            document.getElementById("rece_area").setAttribute("disabled", true);
+            //根据id，查询信息
+            $.ajax({
+                url: "/flowerui/SelUserRece",
+                type: "post",
+                data: { "rid": rid },
+                success: function (result) {
+                    if (result != null) {
+                        var re = result.split('^');
+                        $("#rece_name").val(re[0]);
+                        $("#rece_tel").val(re[1]);
+                        $("#rece_area").val(re[2]);
+                    }
+                }
+            });
+
+        }
+    }
+
+    //随机标签
+    function RendTag() {
+        //数组
+        var TagZip = new Array("新鲜保障", "七天无理由", "商家态度好", "运输时间快", "包装精美", "外观设计好看", "正品保险", "售后服务好", "鲜花品质好", "那些花儿", "用于送人", "风花雪月", "花容月貌", "花语", "念念不忘");
+        for (var i = 0; i < 4; i++) {
+            var _index = Math.floor(Math.random() * TagZip.length);
+            var s = TagZip[_index];
+            $("#thetag_" + i).html(s);
+        };
+    }
+</script>

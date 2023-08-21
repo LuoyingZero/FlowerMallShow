@@ -1,0 +1,230 @@
+﻿/*功能区*/
+.top_tool {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    color: black;
+    padding: 5px 10px;
+    display: inline-block;
+    border-bottom: 2px solid gray;
+    margin: 0px -3px;
+}
+
+    .top_tool:hover {
+        color: orangered;
+        border-bottom: 2px solid orangered;
+    }
+
+.top_tool_Sel {
+    background: none;
+    border: none;
+    outline: none;
+    width: 100px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    color: orangered;
+    padding: 5px 10px;
+    display: inline-block;
+    border-bottom: 2px solid orangered;
+    margin: 0px -3px;
+}
+/*搜索区域*/
+.sel {
+    box-sizing: border-box;
+    display: inline-block;
+    height: 26px;
+    vertical-align: -webkit-baseline-middle;
+    border: 1px solid #bfbfbf;
+    font-size:14px;
+}
+
+.sel_input {
+    padding-left: 5px;
+    outline: none;
+}
+
+.sel_btn {
+    background-color: whitesmoke;
+    margin-left: -5px;
+    width: 80px;
+    outline: none;
+}
+
+#OrderSel {
+    width: 125px;
+    padding-left: 10px;
+    margin-right: -5px;
+    outline: none;
+}
+
+/*订单数据展示区域*/
+.orderItem {
+    border: 1px solid gray;
+    margin: 10px auto;
+}
+
+    .orderItem a {
+        color: black;
+        text-decoration: none;
+    }
+
+        .orderItem a:hover {
+            color: orangered;
+        }
+/*展示的标题区*/
+.ShowTit {
+    height: 30px;
+    border: 1px solid gray;
+    background-color: aliceblue;
+    text-align: center
+}
+
+.orderItem_1 {
+    display: inline-block;
+    /*vertical-align: top;*/
+    padding-top: 10px;
+    width: 10%;
+    text-align: center;
+}
+
+.orderItem_2 {
+    display: inline-block;
+    /*vertical-align: top;*/
+    /*padding-top: 10px;*/
+    width: 15%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.orderItem_3 {
+    display: inline-block;
+    /*vertical-align: top;*/
+    padding-top: 10px;
+    width: 25%;
+    text-align: center;
+}
+
+.orderName {
+    float: left;
+    width: calc(100% - 110px);
+    padding: 10px;
+    text-align: left;
+}
+
+.orderItem_title {
+    background-color: azure;
+    height: 30px;
+    line-height: 30px;
+}
+
+.form-control {
+    outline: none;
+}
+
+.text_red{
+    color:red;
+}
+
+/*付款区域*/
+#float_area {
+    width: 100%;
+    height: 100%;
+    /*background: initial;*/
+    background-color: rgba(80, 80, 80, 0.5);
+    position: fixed;
+    display: none;
+    top: 0;
+}
+
+#float_area_pay {
+    width: 380px;
+    height: 300px;
+    background: white;
+    border: 1px solid gray;
+    border-radius: 30px;
+    position: fixed;
+    top: calc(50% - 150px);
+    left: calc(50% - 190px);
+    padding: 20px;
+}
+
+.pay_tit {
+    display: block;
+    font-size: 25px;
+    text-align: center;
+    font-weight: 800;
+}
+
+/*输入框*/
+.pay_input {
+    display: block;
+    width: 310px;
+    text-align: center;
+    height: 60px;
+    margin: 50px auto;
+    /* border: none; */
+    outline: none;
+    font-size: 9em;
+    font-family: -webkit-pictograph;
+}
+
+.pay_btn {
+    width: 100px;
+    font-size: 18px;
+    margin-right: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    outline: none;
+}
+
+/*二维码区域*/
+.QR_Area {
+    position: absolute;
+    z-index: 888;
+    width: 200px;
+    height: 220px;
+    border: 1px solid gray;
+    display: none;
+}
+
+.qr_img {
+    width: 198px;
+    height: 198px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+/*评论区域*/
+#float_areaComm {
+    width: 100%;
+    height: 100%;
+    /*background: initial;*/
+    background-color: rgba(80, 80, 80, 0.5);
+    position: fixed;
+    display: none;
+    top: 0;
+}
+
+.modalComm_text {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 90px;
+    width: calc(100% - 100px);
+    float: right;
+    resize: none;
+    padding: 10px;
+    background-repeat: no-repeat;
+    background-position: right;
+    background-image: url(/Images/2233backimg.png);
+}
+.modalComm_img {
+    width: 90px;
+    height: 90px;
+    border: 1px solid gray;
+}

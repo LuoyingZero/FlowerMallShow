@@ -1,0 +1,99 @@
+﻿@using FlowerMall.Models;
+
+@foreach (var item in ViewBag.uOrder as List<tb_Order>)
+{
+    <div class="orderItem">
+        <div class="orderItem_title">
+            <span style="padding:0px 10px;">@item.CreateTime</span> <span>订单号 @item.OrderNumber</span>
+            <span style="float:right;padding:0 20px;"><a href="#" onclick="OrderDel('@item.OrderID','@item.OrderState')">删除订单</a></span>
+        </div>
+        <table style="width: 100%;">
+            <!--同样动态，查询从表-->
+            @{
+                var inum = 0;
+                foreach (var spitem in ViewBag.formOrder as List<tb_OrderSp>)
+                {
+                    if (spitem.OrderID == item.OrderID)
+                    {
+                        <tr style="font-size:14px;border-top:1px solid gray;">
+                            <td class=orderItem_3>
+                                <div style="float:left;margin: 0 0 10px 10px;">
+                                    <img style="width:100px;height:100px;" src="@spitem.GoodImg" />
+                                </div>
+                                <div class="orderName">
+                                    <span>@spitem.GoodName</span>
+                                </div>
+                            </td>
+                            <td class="orderItem_2">
+                                ￥@spitem.GoodPrice
+                            </td>
+                            <td class="orderItem_2">
+                                @spitem.GoodNums
+                            </td>
+                            @if (inum == 0)
+                            {
+                                <td class="orderItem_2">
+                                    <span style="font-weight:700">￥@item.OrderMoney</span>
+                                    <br />
+                                    <span>（含运费：￥@item.GoodFreight）</span>
+                                </td>
+                                <td class="orderItem_2">
+                                    @if (item.OrderState == 0)
+                                    {
+                                        <span>暂未付款</span><br /><span><a href="#" onclick="ShowPay(@item.OrderID)">点击付款</a></span>
+                                    }
+                                    else if (item.OrderState == 1)
+                                    {
+                                        <span>等待发货</span>
+                                    }
+                                    else if (item.OrderState == 2)
+                                    {
+                                        <span>正在运输</span><br /><span><a href="/flowerui/ordermove/@item.OrderID">查看物流</a></span>
+                                        <br /><br />
+                                        <span><a href="/flowerui/ordercon?oid=@item.OrderID" onclick="return confirm('请确认已收到货物！')">确认收货</a></span>
+                                    }
+                                    else if (item.OrderState == 3)
+                                    {
+                                        using (Ajax.BeginForm("OrderDataAjax", "FlowerUI", new AjaxOptions
+                                        {
+                                            UpdateTargetId = "orderModal_Ajax",
+                                            InsertionMode = InsertionMode.Replace
+                                        }))
+                                        {
+                                            <input type="hidden" name="selectid" value="@item.OrderID" />
+                                            <button type="submit" class="btn text_red" data-toggle="modal" data-target="#myModal">等待评价</button>
+                                        }
+                                    }
+                                    else if (item.OrderState == 4)
+                                    {
+                                        <span>交易完成</span>
+                                    }
+                                </td>
+                                <td class="orderItem_2">
+                                    <span><a href="#" onclick="alert('这么好的花，居然有人想退款？不会吧不会吧不会吧')">申请退款</a></span>
+                                    <br />
+                                    <span><a onclick="ShowQR(@item.OrderID)">查看详情</a></span>
+                                    <div id="QR_@item.OrderID" class="QR_Area" onclick="CloseQR(@item.OrderID)">
+                                        <div>点击即可关闭</div>
+                                        <img class="qr_img" src="#" />
+                                        @*<img class="qr_img" src="http://qr.liantu.com/api.php?text=http://hliyi.xyz:9527/?id=@item.OrderID&fg=007bff" />*@
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="orderItem_2">
+                                </td>
+                                <td class="orderItem_2">
+                                </td>
+                                <td class="orderItem_2">
+                                </td>
+                            }
+                            @{inum += 1;}
+                        </tr>
+                    }
+                }
+            }
+        </table>
+    </div>
+}

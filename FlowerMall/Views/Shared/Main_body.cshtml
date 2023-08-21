@@ -1,0 +1,114 @@
+﻿<head>
+    <title>花语馨苑 @ViewBag.Title</title>
+
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            font-size:14px;
+        }
+
+        #top {
+            border-bottom: 1px solid gray;
+        }
+
+        #dav {
+            background-color: #f2f2f2;
+            width: 100%;
+            padding: 3px 15%;
+            border-bottom: 1px solid gray;
+            position: fixed;
+            z-index: 999;
+        }
+
+            #dav span {
+                color: darkgray;
+                /*font-size: 12px;*/
+            }
+
+            #dav a {
+                color: darkgray;
+                text-decoration: none;
+            }
+
+                #dav a:hover {
+                    color: red;
+                    text-decoration: underline;
+                }
+
+        .dav_span {
+            padding: 0px 10px;
+        }
+
+
+
+
+
+        #footer {
+            width: 100%;
+            height: 150px;
+            background-color: black;
+            text-align: center;
+            line-height: 35px;
+            color: white;
+        }
+
+            #footer a {
+                color: white;
+                text-decoration: none;
+            }
+
+                #footer a:hover {
+                    color: orange;
+                }
+    </style>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bs4.pop.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/umd/popper.min.js"></script>
+    <script src="~/Scripts/bs4.pop.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<div id="top">
+    <div id="dav">
+        <span><a href="~/FlowerUI/Index">花语首页</a></span>
+        @{
+            if (Session["userid"] == null)
+            {
+                <span class="dav_span">Hi，欢迎来到花语</span>
+                <span class="dav_span"><a href="~/FlowerUI/login">请先登录</a></span>
+                <span class="dav_span"><a href="~/FlowerUI/register">免费注册</a></span>
+            }
+            else
+            {
+                <span class="dav_span">Hi，欢迎 <a href="#">【@Session["username"]】</a>回到花语</span>
+                <span class="dav_span"><a href="~/FlowerUI/Cart">购物车</a></span>
+                <span class="dav_span"><a href="~/FlowerUI/Order">我的订单</a></span>
+                <span class="dav_span"><a href="~/FlowerUI/Exit" onclick="return confirm('确认退出当前账号吗？')">退出登录</a></span>
+            }
+        }
+
+    </div>
+    <img id="main_top_img" src="~/images/main_top1.png" style="width:100%" />
+</div>
+
+@RenderBody()
+
+
+<div id="footer" class="">
+    <br />
+    <a href="/">首页</a>
+    <a href="#" target="_blank">关于我们</a>
+    <a href="#" target="_blank">媒体报道</a>
+    <a href="#" target="_blank">联系方式</a>
+    <a href="#" target="_blank">企业团购</a>
+    <a href="#" target="_blank">花店入驻</a>
+    <a href="#" target="_blank">友情链接</a>
+    <a href="#" target="_blank">在线补款</a>
+    <br />
+    <a href="/profile/ChinaFlowerAssociation.htm" rel="nofollow" target="_blank" title="中国花卉协会会员">中国花卉协会会员</a>
+    中国鲜花网领先品牌，鲜花速递专家！
+</div>
+

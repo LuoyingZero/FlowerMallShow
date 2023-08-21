@@ -1,0 +1,39 @@
+﻿@using FlowerMall.Models;
+@using PagedList.Mvc;
+@model MyPageList
+
+@foreach (var item in Model.orderlist)
+{
+    <tr>
+        <td>@item.OrderNumber</td>
+        <td>@item.OrderMoney</td>
+        <td>@item.PaymentTime</td>
+        @if (item.ReceiveTime == null)
+        {
+            <td>交易暂未完成</td>
+        }
+        else
+        {
+            <td>@item.ReceiveTime</td>
+        }
+        @if (item.OrderState == 1)
+        {
+            <td style="color:orange;">待发货·请尽快发货</td>
+        }
+        else if (item.OrderState == 2)
+        {
+            <td>正在运输中</td>
+        }
+        else if (item.OrderState == 3)
+        {
+            <td>已确认收货，待评价</td>
+        }
+        else if (item.OrderState == 4)
+        {
+            <td style="color:greenyellow;">交易完成</td>
+        }
+        <td>
+            <button class="btn btn-success" onclick="Details(@item.OrderID)">查看详情</button>
+        </td>
+    </tr>
+}

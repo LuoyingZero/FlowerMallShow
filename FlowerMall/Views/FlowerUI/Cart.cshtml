@@ -1,0 +1,367 @@
+﻿@using FlowerMall.Models;
+@model List<tb_ShopCart>
+@{
+    ViewBag.Title = "那些年我们收藏过的宝贝";
+    Layout = "~/Views/Shared/Main_body.cshtml";
+    <link href="~/Content/FlowerUI/cart.css" rel="stylesheet" />
+
+
+    <link href="~/Content/FlowerBack/icons.css" rel="stylesheet" />
+}
+
+<div id="float_area">
+    <div id="float_area_pay">
+        <span id="pay_id" style="display: none;"></span>
+        <span class="pay_tit">选择收货地址</span>
+        <select name="rece" class="rece_select" onchange="receSelect()">
+            @{
+                if (ViewBag.UserRece != null)
+                {
+                    foreach (var item in ViewBag.UserRece as List<tb_ReceAddress>)
+                    {
+                        <option value="@item.ReceID">
+                            [姓名：@item.ReceName] [收货地址：@item.ReceAddr]
+                        </option>
+                    }
+                }
+            }
+            <option value="0">
+                使用临时收货地址
+            </option>
+        </select>
+        <br />
+        <div>
+            <p>
+                <span class="rece_span">收货人：</span>
+                <input type="text" class="rece_input" id="rece_name" maxlength="18" placeholder="请输入收件人的姓名" />
+            </p>
+            <p>
+                <span class="rece_span">手机号：</span>
+                <input type="text" class="rece_input" id="rece_tel" oninput="value=value.replace(/[^0-9]+$/,'')" maxlength="11" placeholder="请输入11位的手机号码" />
+            </p>
+            <p>
+                <span class="rece_span">收货地址：</span>
+                <input type="text" class="rece_input" id="rece_area" maxlength="30" placeholder="请使用真实收货地址!!!" />
+            </p>
+        </div>
+        <div style="text-align:right;">
+            <button id="pay_btn" class="pay_btn btn btn-primary btn-outline-primary" onclick="CartPay()" style="color:white;">确定</button>
+            <button class="pay_btn btn btn-secondary" onclick="CloseArea()">取消</button>
+        </div>
+    </div>
+</div>
+
+<div id="cart_main">
+    <div>
+        <h1><i class="fa fa-shopping-cart" style="padding:0px 20px;"></i>购物车</h1>
+    </div>
+
+    @*购物车主体*@
+    <div>
+        <table style="width:100%" id="showtab">
+            <tr class="cart_Top">
+                <th class="cart_Item_1" style="padding:0">选择</th>
+                <th class="cart_Item_1" style="padding:0">图片</th>
+                <th class="cart_Item_4">商品名称</th>
+                <th class="cart_Item_4">商品介绍</th>
+                <th class="cart_Item_2">商品单价</th>
+                <th class="cart_Item_3">购买数量</th>
+                <th class="cart_Item_2">商品总价</th>
+                <th class="cart_Item_2" style="text-align:left;padding-left:50px;">操作</th>
+            </tr>
+            <tbody id="tabdata">
+                @foreach (var item in Model)
+                {
+                    <tr class="cart_Item">
+                        <td class="cart_Item_1">
+                            <input type="checkbox" class="cart_check" value="@item.ShopID" onchange="CheckSP()" />
+                        </td>
+                        <td class="cart_Item_1">
+                            <img src="@item.GoodImg" style="width:80px;height:80px;border: 1px solid black;" />
+                        </td>
+                        <td class="cart_Item_4 cart_name">
+                            @item.GoodName
+                        </td>
+                        <td class="cart_Item_4 cart_info">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="">
+                                @item.GoodInfo
+                            </span>
+
+                        </td>
+                        <td class="cart_Item_2 ">
+                            <span style="font-weight: 800; font-size: 14px; color: black;">￥：@item.GoodPrice</span>
+                        </td>
+                        <td class="cart_Item_3">
+                            <button type="button" class="cart_numbut" onclick="CheckSD('@item.ShopID','@item.GoodPrice')">-</button>
+                            <span id="cart_sp_@item.ShopID" class="cart_num">@item.GoodNum</span>
+                            <button type="button" class="cart_numbut" onclick="CheckSA('@item.ShopID','@item.GoodPrice')">+</button>
+                        </td>
+                        <td class="cart_Item_2">
+                            @{
+                                var sum = item.GoodPrice * item.GoodNum;
+                                var num = item.GoodNum;
+                                <span id="cart_sum_@item.ShopID" style="font-weight:800;font-size:14px;color:red;">￥：@sum</span>
+                            }
+                        </td>
+                        <td class="cart_Item_2" style="text-align:left;padding-left:50px;">
+                            <a href="/FlowerUI/details/@item.GoodID">查看详情</a>
+                            <br />
+                            <a href="/FlowerUI/CartDel?id=@item.ShopID" onclick="return confirm('确定删除该商品？')">删除</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @*底部信息区*@
+    <div>
+        <div class="cart_bottom">
+            <div class="cart_bottom_left">
+                <input type="checkbox" id="checkall" style="margin-left:30px;" onchange="CheckAll()" />
+                <span style="padding:0px 10px;">全选</span>
+                @*<button type="button" class="btn btn-info" onclick="">删除</button>*@
+            </div>
+            <div class="cart_bottom_right">
+                已选商品<span id="cart_gnum" style="color:orange;font-size:18px;padding:0px 5px;">0</span>件
+                合计（不含运费）：
+                <span id="cart_gsum" style="color:orange;font-size:20px;padding-right:20px;">0.00</span>
+                <button type="button" onclick="ShowRece()" class="cart_buybut" style="height: 100%; width: 120px; color: white;">结算</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+        });
+
+        //新增数量
+        function CheckSA(id, price) {
+            // alert(id + "--" + num);
+            $.ajax({
+                url: "/flowerui/CartSetNum",
+                type: "post",
+                data: { "cid": id, "cstate": "增加" },
+                success: function (result) {
+                    if (result == "true") {
+                        //window.location.href = '/flowerui/cart';
+                        //直接修改数量以及金钱，不进行刷新
+                        var num = $("#cart_sp_" + id).html();
+                        num++;
+                        $("#cart_sp_" + id).html(num);
+                        //这样修改后，数量不会动态更新，需要把参数进行修改。
+                        var sum = (num * price).toFixed(2);//计算总价
+                        //alert(sum)
+                        $("#cart_sum_" + id).html("￥：" + sum);
+                        CheckSP();//调用方法，重新计算总价
+                    }
+                }
+            });
+
+        }
+        //减少数量
+        function CheckSD(id, price) {
+            //不能通过参数接收数量，需要通过js重新获取静态数量。
+            //alert(id + "--" + num);
+            var num = $("#cart_sp_" + id).html();
+            if (num > 1) {
+                //alert('数量减一')
+                $.ajax({
+                    url: "/flowerui/CartSetNum",
+                    type: "post",
+                    data: { "cid": id, "cstate": "减少" },
+                    success: function (result) {
+                        if (result == "notone") {
+                            alert("数量已最低，无法再减少");
+                        } else if (result == "true") {
+                            //window.location.href = '/flowerui/cart';
+                            var num = $("#cart_sp_" + id).html();
+                            num--;
+                            $("#cart_sp_" + id).html(num);
+                            //这样修改后，数量不会动态更新，需要把参数进行修改。
+                            var sum = (num * price).toFixed(2);//计算总价
+                            //alert(sum)
+                            $("#cart_sum_" + id).html("￥：" + sum);
+                            CheckSP();//调用方法，重新计算总价
+                        }
+                    }
+                });
+            }
+        }
+
+        //多选框
+        function CheckSP() {
+            //先获取所有的多选框
+            var cart = document.getElementsByClassName("cart_check");
+            var myArray = new Array()//声明数组
+            var s = 0;
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].checked) {
+                    //想法1，将这些id存储于数组。通过ajax传递到后台，根据数组，计算总数量以及总价
+                    myArray[s] = cart[i].value; //由于需要判断该项是否选中，因此这里需要一个新参数
+                    s++;
+                }
+            }
+            //alert('输出数组内容')
+            //for (var i = 0; i < myArray.length; i++) {
+            //alert(myArray[i]);
+            //}
+            //判断是否为空
+            if (myArray.length < 1) {
+                $("#cart_gnum").html("0");
+                $("#cart_gsum").html("0.00");
+            } else {
+                $.ajax({
+                    url: "/flowerui/CartSum",
+                    type: "post",
+                    data: { "myArray": myArray },
+                    success: function (result) {
+                        console.log(result);
+                        var s = result.split('?');
+                        $("#cart_gnum").html(s[0]);
+                        $("#cart_gsum").html(s[1]);
+                    }
+                });
+            }
+        }
+        //多选框·全选
+        function CheckAll() {
+
+            //先获取购物车列表的多选框
+            var cart = document.getElementsByClassName("cart_check");
+            //获取当前全选按钮的状态
+            var all = document.getElementById("checkall").checked;
+            var myArray = new Array()//声明数组
+            for (var i = 0; i < cart.length; i++) {
+                cart[i].checked = all;
+                myArray[i] = cart[i].value; //由于需要判断该项是否选中，因此这里需要一个新参数
+            }
+            if (all) {
+                $.ajax({
+                    url: "/flowerui/CartSum",
+                    type: "post",
+                    data: { "myArray": myArray },
+                    success: function (result) {
+                        console.log(result);
+                        var s = result.split('?');
+                        $("#cart_gnum").html(s[0]);
+                        $("#cart_gsum").html(s[1]);
+                    }
+                });
+            } else {
+                $("#cart_gnum").html("0");
+                $("#cart_gsum").html("0.00");
+            }
+        }
+
+        //展示收货地址区域
+        function ShowRece() {
+            //添加验证·是否选择商品
+            var cart = document.getElementsByClassName("cart_check");
+            var iArray = new Array()//声明数组
+            var s = 0;
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].checked) {
+                    //预计想法1，将这些id存储于数组。通过ajax传递到后台，根据数组，计算总数量以及总价
+                    iArray[s] = cart[i].value; //由于需要判断该项是否选中，因此这里需要一个新参数
+                    s++;
+                }
+            }
+            //判断是否为空
+            if (iArray.length < 1) {
+                alert('请选择需要购买的商品！');
+            } else {
+                //展示选择收货地址区域
+                document.getElementById("float_area").style.display = "block";
+                //禁止操作输入框
+                document.getElementById("rece_name").setAttribute("disabled", true);
+                document.getElementById("rece_tel").setAttribute("disabled", true);
+                document.getElementById("rece_area").setAttribute("disabled", true);
+                receSelect();
+            }
+        }
+        function CloseArea() {
+            document.getElementById("float_area").style.display = "none";
+        }
+        //切换收货地址
+        function receSelect() {
+            var rid = $(".rece_select").val();
+            //alert(rid);
+            if (rid == "0") {
+                //alert('123');
+                document.getElementById("rece_name").removeAttribute("disabled");
+                document.getElementById("rece_tel").removeAttribute("disabled");
+                document.getElementById("rece_area").removeAttribute("disabled");
+                //清除默认信息
+                $("#rece_name").val("");
+                $("#rece_tel").val("");
+                $("#rece_area").val("");
+            } else {
+                document.getElementById("rece_name").setAttribute("disabled", true);
+                document.getElementById("rece_tel").setAttribute("disabled", true);
+                document.getElementById("rece_area").setAttribute("disabled", true);
+                //根据id，查询信息
+                $.ajax({
+                    url: "/flowerui/SelUserRece",
+                    type: "post",
+                    data: { "rid": rid },
+                    success: function (result) {
+                        if (result != null) {
+                            var re = result.split('^');
+                            $("#rece_name").val(re[0]);
+                            $("#rece_tel").val(re[1]);
+                            $("#rece_area").val(re[2]);
+                        }
+                    }
+                });
+
+            }
+        }
+
+        //结算功能
+        function CartPay() {
+            //先获取所有的多选框
+            var cart = document.getElementsByClassName("cart_check");
+            var idArray = new Array()//声明数组
+            var s = 0;
+            //获取收货人信息
+            var rece_name = $("#rece_name").val();
+            var rece_tel = $("#rece_tel").val();
+            var rece_area = $("#rece_area").val();
+            for (var i = 0; i < cart.length; i++) {
+                if (cart[i].checked) {
+                    //预计想法1，将这些id存储于数组。通过ajax传递到后台，根据数组，计算总数量以及总价
+                    idArray[s] = cart[i].value; //由于需要判断该项是否选中，因此这里需要一个新参数
+                    s++;
+                }
+            }
+            //判断收件人信息是否为空
+            if (rece_name.length >= 2 && rece_name.length < 20 && rece_tel.length == 11 && rece_area.length >= 6 && rece_area.length <= 30) {
+                $.ajax({
+                    url: "/flowerui/CartPay",
+                    type: "post",
+                    data: { "idArray": idArray, "rece_name": rece_name, "rece_tel": rece_tel, "rece_area": rece_area },
+                    success: function (result) {
+                        if (result == "true") {
+                            alert('订单创建成功，请尽快付款');
+                            window.location.href = "/FlowerUI/order";
+                        }
+                    }
+                });
+
+            } else {
+                if (rece_name.length < 2) {
+                    alert('请输入2至18位的收件人姓名')
+                } else if (rece_tel.length != 11) {
+                    alert('请输入11位的收件人手机号码')
+                } else if (rece_area.length < 6) {
+                    alert('请输入6至30位的收件人地址');
+                }
+            }
+        }
+
+        //通过多选框操作，来获取商品id数组，后台根据数组生成对应的订单，需要新建方法·多商品结算，逻辑重写。
+
+    </script>
+</div>
+

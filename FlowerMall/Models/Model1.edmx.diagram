@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2a8ce6f7d7f94ce898b711262be15c24" Name="Diagram1">
+        <EntityTypeShape EntityType="FlowerDBModel.sysdiagrams" Width="1.5" PointX="0.875" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowerDBModel.tb_Collection" Width="1.5" PointX="7.375" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowerDBModel.tb_Comments" Width="1.5" PointX="4.25" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowerDBModel.tb_ConsumeData" Width="1.5" PointX="9.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowerDBModel.tb_FlowerAdmin" Width="1.5" PointX="2.625" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowerDBModel.tb_GoodsInfo" Width="1.5" PointX="1.625" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowerDBModel.tb_ReceAddress" Width="1.5" PointX="7.375" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowerDBModel.tb_ShopCart" Width="1.5" PointX="7.375" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowerDBModel.tb_UserInfo" Width="1.5" PointX="4.625" PointY="5.25" IsExpanded="true" />
+        <AssociationConnector Association="FlowerDBModel.FK__tb_Collec__UserI__24927208" ManuallyRouted="false" />
+        <AssociationConnector Association="FlowerDBModel.FK__tb_Commen__GoodI__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="FlowerDBModel.FK__tb_Commen__UserI__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="FlowerDBModel.FK__tb_ReceAd__UserI__21B6055D" ManuallyRouted="false" />
+        <AssociationConnector Association="FlowerDBModel.FK__tb_ShopCa__UserI__286302EC" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FlowerDBModel.tb_Order" Width="1.5" PointX="9.375" PointY="8" />
+        <EntityTypeShape EntityType="FlowerDBModel.tb_OrderSp" Width="1.5" PointX="11.625" PointY="8.5" />
+        <AssociationConnector Association="FlowerDBModel.FK__tb_OrderS__Order__60A75C0F" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

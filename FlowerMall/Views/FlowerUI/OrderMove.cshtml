@@ -1,0 +1,349 @@
+﻿@using FlowerMall.Models;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>OrderMove</title>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            font-size: 14px;
+        }
+        body{
+            background-color: #ecececeb;
+        }
+        .top{
+            height: 30px;
+            background: white;
+            padding: 5px 5%;
+            margin-bottom:5px;
+            text-align: center;
+        }
+            .top img {
+                height: 30px;
+                vertical-align: -webkit-baseline-middle;
+                position: absolute;
+                left: 5%;
+            }
+        .top span{
+            vertical-align: -webkit-baseline-middle;
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .map_area{
+            width:90%;
+            padding:0px 5%;
+            margin:5px auto;
+            background-color:white;
+        }
+        /*收货人区域*/
+        #rece_area{
+            height: 50px;
+            line-height: 25px;
+            width: 100%;
+            padding: 10px 0px;
+        }
+        .rece_name {
+            font-size: 18px;
+            color: black;
+            font-weight: 600;
+        }
+
+        .rece_tel {
+            font-size: 14px;
+            color: black;
+            padding-left: 20px;
+        }
+
+        .rece_area {
+            font-size: 16px;
+            color: black;
+        }
+
+        .tuoyuan_btn {
+            width: 100px;
+            height: 30px;
+            border: 1px solid gray;
+            border-radius: 15px;
+            background-color: initial;
+            outline: none;
+            color: gray;
+        }
+
+        /*商品区域*/
+        .main_sp {
+            background-color: white;
+            margin: 15px auto;
+            padding: 0px 5%;
+        }
+        .sp_show{    
+            width: 100%;
+            height: 120px;
+            padding: 10px 0px;
+        }
+        .sp_img {
+            height:100px;
+            width:100px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+        .spitem_name {
+            display: block;
+            width: calc(90% - 180px);
+            height: 40px;
+            line-height:20px;
+            overflow: hidden;
+            position: absolute;
+            left: calc(120px + 5%);
+            color: black;
+            font-size: 16px;
+        }
+        .spitem_price{
+            float: right;
+            position: static;
+        }
+        .spitem_num{
+            display: block;
+            float: right;
+            position: relative;
+            right: -35px;
+            top: 25px;
+        }
+        /*商品价格区*/
+        .sp_price_area {
+            width: 100%;
+            height: 80px;
+            margin: 10px auto;
+            line-height: 25px;
+        }
+        .price_left {
+            color: darkgray;
+            float: left;
+        }
+
+        .price_right {
+            color: darkgray;
+            float: right;
+        }
+        /*订单信息区*/
+        .order_data {
+            background-color: white;
+            margin: 0px auto;
+            margin-top:5px;
+            padding: 20px 5%;
+        }
+        .order_data_title{
+            font-size:20px;
+        }
+        .order_data table {
+            width: 100%;
+            height: 200px;
+            margin: 10px auto;
+        }
+        .order_data a{
+            text-decoration:none;
+        }
+        .about_btn{
+            width: 100%;
+            height: 30px;
+            text-align: center;
+            font-size: 20px;
+            color: black;
+            border: 1px solid darkgray;
+            border-radius: 15px;
+            outline: none;
+        }
+        #allmap{
+            width:100%;
+            height:250px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <img src="~/Images/花语logo.png" />
+        <span>订单详情</span>
+    </div>
+    <div class="map_area">
+        @*收件人区域·用户不可见*@
+        <div id="rece_hide">
+            <span id=""></span>
+            <span id=""></span>
+        </div>
+
+        <div id="allmap"></div>
+        <div style="margin:10px auto;text-align:right;">
+            <button type="button" id="map_but"  class="tuoyuan_btn" value="0" onclick="MapHW()">展开/收起</button>
+        </div>
+        @*收件人区域·用户可见*@
+        <div id="rece_area">
+            <span class="rece_name">@ViewBag.mOrder.ReceName</span>
+            <span class="rece_tel">@ViewBag.mOrder.ReceTel</span>
+            <br />
+            <span id="user_area" class="rece_area">@ViewBag.mOrder.ReceAddr</span>
+        </div>
+    </div>
+    <div class="main_sp">
+        @{
+            foreach (var spitem in ViewBag.fOrder as List<tb_OrderSp>)
+            {
+                <dl class="sp_show">
+                    <dt style="float:left">
+                        <img class="sp_img" src="@spitem.GoodImg" />
+                    </dt>
+                    <dd>
+                        <span class="spitem_name">【@spitem.GoodName】</span>
+                        <span class="spitem_price">￥@spitem.GoodPrice</span>
+                        <span class="spitem_num">×@spitem.GoodNums</span>
+                    </dd>
+                </dl>
+            }
+        }
+        <div style="text-align:right;margin: 10px auto;">
+            <button class="tuoyuan_btn" onclick="tui()">申请售后</button>
+        </div>
+        <div class="sp_price_area">
+            <span class="price_left">商品总价</span>
+            @{
+                var monery = decimal.Parse(ViewBag.mOrder.OrderMoney);
+                var you = ViewBag.mOrder.GoodFreight;
+                var price = monery - you;
+                <span class="price_right">￥@price</span>
+            }
+            <br />
+            <span class="price_left">运费(快递)</span>
+            <span class="price_right">￥@ViewBag.mOrder.GoodFreight</span>
+            <br />
+            <span class="price_left" style="color:black;font-size:16px;">实付款</span>
+            <span class="price_right" style="color:red;font-size:18px;">￥@ViewBag.mOrder.OrderMoney</span>
+        </div>
+    </div>
+    <div class="order_data">
+        <span class="order_data_title">订单信息</span>
+        <table>
+            <tr>
+                <td>订单编号：</td>
+                <td>@ViewBag.mOrder.OrderNumber</td>
+            </tr>
+            <tr>
+                <td>创建时间：</td>
+                <td>@ViewBag.mOrder.CreateTime</td>
+            </tr>
+            <tr>
+                <td>付款时间：</td>
+                <td>@ViewBag.mOrder.PaymentTime</td>
+            </tr>
+            <tr>
+                <td>发货时间：</td>
+                <td>@ViewBag.mOrder.DeliverTime</td>
+            </tr>
+            <tr>
+                <td>成交时间：</td>
+                <td>@ViewBag.mOrder.ReceiveTime</td>
+            </tr>
+        </table>
+        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2457879996&site=qq&menu=yes"><div class="about_btn">联系卖家</div></a>
+    </div>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=这里输入AK"></script>
+    <script>
+        function tui() {
+            alert('请先登录~');
+        }
+
+        //经纬度·默认坐标
+        var u_lng = 116.404;
+        var u_lat = 39.915;
+
+        $(function () {// 初始化内容
+            Map_Lng_Lat();
+            
+            //setTimeout('LogMap()',500);//设置延时执行，或关闭异步
+        }); 
+
+
+        function Map_Lng_Lat() {
+            //通过ajax获取收件人的地理坐标
+            var area = $("#user_area").html();
+           // alert(area);
+            var sarea = encodeURIComponent(area);
+            var httpUrl = 'https://api.map.baidu.com/geocoding/v3/?address=' + sarea + '&output=json&ak=这里输入AK&callback=showLocation';
+            $.ajax({
+                url: httpUrl,
+                type: "get",
+                contentType: "application/json",
+                dataType: "JSONP",
+                async: false,
+                success: function (msg) {
+                    //console.log(msg);
+                    //alert(area + '的坐标信息如下：\n经度为' + msg.result.location.lng + '\n维度为' + msg.result.location.lat);
+                    u_lng = msg.result.location.lng;
+                    u_lat = msg.result.location.lat;
+
+                    //地图初始化
+                    var map = new BMap.Map("allmap");
+                    map.centerAndZoom("北京", 15);
+                    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+                    var driving = new BMap.DrivingRoute(map, {
+                        renderOptions: {
+                            map: map,
+                            autoViewport: true
+                        }
+                    });
+
+                    var start = new BMap.Point(116.404, 39.915);      //起始点坐标
+                    var end = new BMap.Point(u_lng, u_lat);       //结束点坐标
+                    driving.search(start, end);
+
+                }, error: function (data) {
+                    alert("Ajax执行失败");
+                    console.log(data);
+                }
+            });
+
+            
+
+            driving.search(start, end);
+        }
+
+        //地图初始化
+        function LogMap() {
+            var map = new BMap.Map("allmap"); 
+            map.centerAndZoom("北京",15); 
+            map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+            var driving = new BMap.DrivingRoute(map, { 
+                renderOptions: { 
+                    map: map, 
+                    autoViewport: true 
+                }
+            });
+
+            var start = new BMap.Point(116.404, 39.915);      //起始点坐标
+            var end = new BMap.Point(u_lng, u_lat);       //结束点坐标
+            driving.search(start, end);
+        }
+        //地图·展开·缩小
+        function MapHW() {
+            var state = $("#map_but").val();
+            //alert(state);
+            if (state == "0") {
+                $("#allmap").height(600);
+                $("#map_but").val(1);
+            } else if (state == "1") {
+                $("#allmap").height(250);
+                $("#map_but").val(0);
+            }
+        }
+    </script>
+</body>
+</html>

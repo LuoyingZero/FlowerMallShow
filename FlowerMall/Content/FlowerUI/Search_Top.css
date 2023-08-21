@@ -1,0 +1,88 @@
+﻿#main_top_img {
+    display: none;
+}
+
+#top_tool_area {
+    height: 100px;
+    width: 70%;
+    margin: 20px auto;
+    margin-top: 30px;
+}
+/*类 主要为其他页所用*/
+.top_tool_area {
+    height: 100px;
+    width: 100%;
+    margin: 20px auto;
+    margin-top: 30px;
+}
+.tool_logo {
+    float: left;
+    width: 300px;
+    height: 80px;
+    /* border: 1px solid black; */
+    margin: 10px 0;
+}
+
+    .tool_logo img {
+        width: 200px;
+        height: 50px;
+        margin: 15px 0
+    }
+
+.tool_search {
+    float: left;
+    width: calc(100% - 304px);
+    height: 80px;
+    /* border: 1px solid black; */
+    margin: 10px 0;
+}
+
+/*搜索区域*/
+.Search_Area {
+    position: relative;
+    height: 34px;
+    vertical-align: middle;
+    border: 2px solid #ff0036;
+    width: 594px;
+    margin: 20px 0;
+}
+
+/*输入框*/
+.Search_Input {
+    width: 500px;
+    height: 30px;
+    font-size: 12px;
+    color: black;
+    /*font-weight: 700;*/
+    padding-left: 5px;
+    outline: none;
+    border: none;
+}
+/*搜索按钮*/
+.Search_Button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 90px;
+    border: 0;
+    font-size: 16px;
+    letter-spacing: 4px;
+    cursor: pointer;
+    color: #fff;
+    background-color: #ff0036;
+    /*background-color: #2fa6ec;*/
+    height: 30px;
+    overflow: hidden
+}
+/*筛选区域*/
+.tool_but {
+}
+
+
+
+
+@media all and (max-width:1024px) {
+    .tool_search {
+        float: none;
+    }
+}

@@ -1,0 +1,316 @@
+﻿* {
+    margin: 0px;
+    padding: 0px;
+    font-size: 14px;
+}
+
+
+/*展示区域*/
+.shop_show {
+    width: 1100px;
+    height: 500px;
+    margin: 50px auto;
+}
+/*左右区域*/
+.shop_left {
+    width: 450px;
+    height: 450px;
+    float: left;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid lightgray;
+}
+.shop_right {
+    width: calc(100% - 450px);
+    padding: 50px;
+    padding-top: 0px;
+    float: left;
+    line-height: 50px;
+    color: gray;
+    font-size: 14px;
+}
+
+/*商品名称*/
+.shop_name {
+    color: black;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/*数量框*/
+input[type=number] {
+    -moz-appearance:textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.tb-text {
+    font-size: 12px;
+    margin: 0;
+    height: 30px;
+    border: 1px solid #a7a6ac;
+    width: 50px;
+    background-position: -406px -41px;
+    color: #666;
+    vertical-align: middle;
+    padding: 3px 2px 0 5px;
+    line-height: 30px;
+}
+.mui-amount-btn {
+    display: inline-block;
+    vertical-align: middle;
+}
+.mui-amount-increase {
+    margin-bottom: 3px;
+}
+.tb-amount-widget .mui-amount-decrease, .tb-amount-widget .mui-amount-increase {
+    width: 16px;
+    height: 14px;
+    overflow: hidden;
+    border: 1px solid #a7a6ab;
+    display: block;
+    font-family: tm-detail-font !important;
+    line-height: 12px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.fuwu {
+    padding: 0px 10px;
+}
+
+
+/*购买与加入购物车按钮*/
+.buybutton {
+    width: 180px;
+    height: 40px;
+    color: red;
+    font-size: 18px;
+    margin: 20px 20px 20px 0px;
+    border: 1px solid #ff0036;
+    background-color: #ffeded;
+    line-height:40px;
+}
+.cartbutton {
+    width: 180px;
+    height: 40px;
+    color: white;
+    font-size: 18px;
+    margin: 20px 20px 20px 0px;
+    border: 1px solid #ff0036;
+    background-color: #ff0036;
+    line-height: 40px;
+}
+/*收货地址区域*/
+#float_area {
+    width: 100%;
+    height: 100%;
+    background: initial;
+    /*background-color: rgba(193, 190, 190, 0.51);*/
+    position: fixed;
+    display: none;
+    top: 0;
+}
+
+
+/*付款区域*/
+#float_area_pay {
+    width: 380px;
+    height: 300px;
+    background: white;
+    border: 1px solid gray;
+    border-radius: 30px;
+    position: fixed;
+    top: calc(50% - 150px);
+    left: calc(50% - 190px);
+    padding: 20px;
+}
+
+.pay_tit {
+    display: block;
+    font-size: 25px;
+    text-align: center;
+    font-weight: 800;
+}
+
+/*输入框*/
+.pay_input {
+    display: block;
+    width: 310px;
+    text-align: center;
+    height: 60px;
+    margin: 50px auto;
+    /* border: none; */
+    outline: none;
+    font-size: 10em;
+}
+
+.pay_btn {
+    width: 100px;
+    font-size: 18px;
+    margin-right: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    outline: none;
+}
+.rece_select {
+    width: 100%;
+    height: 25px;
+    margin: 10px auto;
+    font-size: 14px;
+    padding-left: 5px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid;
+}
+.rece_span {
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+    font-size: 14px;
+}
+
+.rece_input {
+    width: calc(100% - 90px);
+    padding-left: 5px;
+}
+
+
+/*底部区域*/
+.bottomArea {
+    width: 1100px;
+    margin: 20px auto;
+}
+
+/*相关推荐区域*/
+.buttArea {
+    display:flex;
+}
+.buttArea_xuan{
+    width:190px;
+    margin-right:10px;
+    /*float:left;*/
+}
+/*展示的卡片*/
+.showCard {
+    width: 100%;
+    min-height: 150px;
+    border: 1px solid lightgray;
+}
+.showCard a:hover {
+    text-decoration: none;
+}
+/*卡片项的标题*/
+.showCard_title {
+    width: 100%;
+    background-color: #ff0036;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    padding-left: 10px;
+}
+.showCard_Item {
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 20px;
+}
+    .showCard_Item dl {
+        margin: 5px auto;
+    }
+    .showCard_Item dd {
+        margin-bottom: 0
+    }
+    .showCard_Item span {
+        padding-left: 5px;
+    }
+
+/*推荐商品--图片*/
+.showCard_Item img {
+    width: 188px;
+    height: 188px;
+
+}
+/*推荐商品--文字*/
+.showCard_ItemText {
+    color: black;
+    padding: 5px;
+    background-color: rgba(239,239,239,.5);
+    height: 80px;
+    line-height: 30px;
+}
+.showCard_Item_tit {
+    display: block;
+    width: 100%;
+    height: 30px;
+    padding-right: 10px;
+    overflow:hidden;
+    font-size: 14px;
+    color: dimgray;
+}
+.showCard_Item_price {
+    font-size: 22px;
+    color: red;
+    font-weight: 700;
+}
+.card_mon{
+    font-size:17px;
+    font-weight:800;
+    color:orange;
+
+}
+/*评论区域*/
+.buttArea_comm {
+    width: calc(100% - 200px);
+    /*float: left;*/
+}
+.buttArea_top {
+    border: 1px solid lightgray;
+    margin-bottom: 10px;
+}
+
+.butt_Tag {
+    height: 40px;
+    border-bottom: 1px solid lightgray;
+    /*margin-bottom: 10px;*/
+    color: #ff0036;
+    padding-left: 10px;
+    line-height: 40px;
+    font-size:20px;
+}
+
+/*评价里的标签*/
+.lableArea{
+    height:80px;
+}
+
+.butt_lable {
+    height: 25px;
+    line-height: 23px;
+    border: 1px solid #ff0036;
+    background-color: white;
+    padding: 0 10px;
+    color: #ff0036;
+    margin: 0 20px;
+}
+.butt_lable:hover {
+    border: 1px solid #ff0036;
+    background-color: #ffeded;
+}
+
+/*循环的评论项*/
+.Comm_Item {
+    height: 120px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid lightgray;
+}
+.Comm_ItemText{
+    height:80px;
+    overflow:hidden;
+}
+.Comm_Item_data {
+    padding-left:20px;
+}
+

@@ -1,0 +1,762 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FlowerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="tb_Collection">
+          <Key>
+            <PropertyRef Name="CollecID" />
+          </Key>
+          <Property Name="CollecID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="GoodID" Type="int" />
+          <Property Name="GoodName" Type="nvarchar" MaxLength="20" />
+          <Property Name="GoodPrice" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="GoodImg" Type="nvarchar" MaxLength="20" />
+          <Property Name="GoodState" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_Comments">
+          <Key>
+            <PropertyRef Name="CommID" />
+          </Key>
+          <Property Name="CommID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GoodID" Type="int" />
+          <Property Name="GoodSort" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="20" />
+          <Property Name="CommText" Type="nvarchar" MaxLength="100" />
+          <Property Name="CommTime" Type="date" />
+          <Property Name="CommImg" Type="nvarchar" MaxLength="20" />
+          <Property Name="ManagerComm" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fabulous" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_ConsumeData">
+          <Key>
+            <PropertyRef Name="ConID" />
+          </Key>
+          <Property Name="ConID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="ConMoney" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="ConRemarks" Type="nvarchar" MaxLength="50" />
+          <Property Name="ConType" Type="int" />
+          <Property Name="OrderNumber" Type="nvarchar" MaxLength="20" />
+          <Property Name="ConTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tb_FlowerAdmin">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdminLoginName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdminLoginPwd" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="AdminName" Type="nvarchar" MaxLength="20" />
+          <Property Name="AdminTel" Type="nvarchar" MaxLength="20" />
+          <Property Name="AdminSex" Type="nvarchar" MaxLength="5" />
+          <Property Name="AdminImg" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tb_GoodsInfo">
+          <Key>
+            <PropertyRef Name="GoodID" />
+          </Key>
+          <Property Name="GoodID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GoodName" Type="nvarchar" MaxLength="50" />
+          <Property Name="GoodType" Type="nvarchar" MaxLength="50" />
+          <Property Name="GoodSort" Type="nvarchar" MaxLength="50" />
+          <Property Name="FlowerLanguage" Type="nvarchar" MaxLength="200" />
+          <Property Name="GoodMainImg" Type="nvarchar" MaxLength="200" />
+          <Property Name="GoodDataImg" Type="nvarchar" MaxLength="200" />
+          <Property Name="GoodStock" Type="int" />
+          <Property Name="GoodState" Type="int" />
+          <Property Name="GoodComments" Type="int" />
+          <Property Name="GoodMsales" Type="int" />
+          <Property Name="GoodCollection" Type="int" />
+          <Property Name="GoodPrice" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="GoodFreight" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderNumber" Type="nvarchar" MaxLength="20" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="ReceName" Type="nvarchar" MaxLength="20" />
+          <Property Name="ReceAddr" Type="nvarchar" MaxLength="50" />
+          <Property Name="ReceTel" Type="nvarchar" MaxLength="11" />
+          <Property Name="GoodFreight" Type="int" />
+          <Property Name="GoodNames" Type="nvarchar" MaxLength="500" />
+          <Property Name="GoodDiscount" Type="nvarchar" MaxLength="50" />
+          <Property Name="OrderMoney" Type="nvarchar" MaxLength="20" />
+          <Property Name="OrderState" Type="int" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="PaymentTime" Type="datetime" />
+          <Property Name="DeliverTime" Type="datetime" />
+          <Property Name="ReceiveTime" Type="datetime" />
+          <Property Name="UserVisible" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_OrderSp">
+          <Key>
+            <PropertyRef Name="DataID" />
+          </Key>
+          <Property Name="DataID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderID" Type="int" />
+          <Property Name="GoodID" Type="int" />
+          <Property Name="GoodName" Type="nvarchar" MaxLength="50" />
+          <Property Name="GoodImg" Type="nvarchar" MaxLength="200" />
+          <Property Name="GoodType" Type="nvarchar" MaxLength="50" />
+          <Property Name="GoodSort" Type="nvarchar" MaxLength="50" />
+          <Property Name="GoodPrice" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="GoodNums" Type="int" />
+          <Property Name="GoodSum" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="tb_ReceAddress">
+          <Key>
+            <PropertyRef Name="ReceID" />
+          </Key>
+          <Property Name="ReceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="ReceName" Type="nvarchar" MaxLength="20" />
+          <Property Name="ReceAddr" Type="nvarchar" MaxLength="50" />
+          <Property Name="ReceTel" Type="nvarchar" MaxLength="11" />
+        </EntityType>
+        <EntityType Name="tb_ShopCart">
+          <Key>
+            <PropertyRef Name="ShopID" />
+          </Key>
+          <Property Name="ShopID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="GoodID" Type="int" />
+          <Property Name="GoodName" Type="nvarchar" MaxLength="20" />
+          <Property Name="GoodPrice" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="GoodSort" Type="nvarchar" MaxLength="50" />
+          <Property Name="GoodInfo" Type="nvarchar" MaxLength="200" />
+          <Property Name="GoodNum" Type="int" />
+          <Property Name="GoodImg" Type="nvarchar" MaxLength="200" />
+          <Property Name="GoodState" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_UserInfo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserLoginName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserLoginPwd" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="UserPayPwd" Type="nvarchar" MaxLength="6" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="20" />
+          <Property Name="UserTel" Type="nvarchar" MaxLength="20" />
+          <Property Name="UserSex" Type="nvarchar" MaxLength="5" />
+          <Property Name="UserMark" Type="int" />
+          <Property Name="UserImg" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserCollection" Type="int" />
+          <Property Name="UserShopCort" Type="int" />
+          <Property Name="UserDatetime" Type="datetime" />
+          <Property Name="UserState" Type="int" />
+          <Property Name="SealTime" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__tb_Collec__UserI__24927208">
+          <End Role="tb_UserInfo" Type="Self.tb_UserInfo" Multiplicity="0..1" />
+          <End Role="tb_Collection" Type="Self.tb_Collection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tb_Collection">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_Commen__GoodI__33D4B598">
+          <End Role="tb_GoodsInfo" Type="Self.tb_GoodsInfo" Multiplicity="0..1" />
+          <End Role="tb_Comments" Type="Self.tb_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_GoodsInfo">
+              <PropertyRef Name="GoodID" />
+            </Principal>
+            <Dependent Role="tb_Comments">
+              <PropertyRef Name="GoodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_Commen__UserI__34C8D9D1">
+          <End Role="tb_UserInfo" Type="Self.tb_UserInfo" Multiplicity="0..1" />
+          <End Role="tb_Comments" Type="Self.tb_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tb_Comments">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_OrderS__Order__60A75C0F">
+          <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
+          <End Role="tb_OrderSp" Type="Self.tb_OrderSp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="tb_OrderSp">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_ReceAd__UserI__21B6055D">
+          <End Role="tb_UserInfo" Type="Self.tb_UserInfo" Multiplicity="0..1" />
+          <End Role="tb_ReceAddress" Type="Self.tb_ReceAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tb_ReceAddress">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_ShopCa__UserI__286302EC">
+          <End Role="tb_UserInfo" Type="Self.tb_UserInfo" Multiplicity="0..1" />
+          <End Role="tb_ShopCart" Type="Self.tb_ShopCart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tb_ShopCart">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FlowerDBModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_Collection" EntityType="Self.tb_Collection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_Comments" EntityType="Self.tb_Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ConsumeData" EntityType="Self.tb_ConsumeData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_FlowerAdmin" EntityType="Self.tb_FlowerAdmin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_GoodsInfo" EntityType="Self.tb_GoodsInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_Order" EntityType="Self.tb_Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_OrderSp" EntityType="Self.tb_OrderSp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ReceAddress" EntityType="Self.tb_ReceAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ShopCart" EntityType="Self.tb_ShopCart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_UserInfo" EntityType="Self.tb_UserInfo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__tb_Collec__UserI__24927208" Association="Self.FK__tb_Collec__UserI__24927208">
+            <End Role="tb_UserInfo" EntitySet="tb_UserInfo" />
+            <End Role="tb_Collection" EntitySet="tb_Collection" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_Commen__GoodI__33D4B598" Association="Self.FK__tb_Commen__GoodI__33D4B598">
+            <End Role="tb_GoodsInfo" EntitySet="tb_GoodsInfo" />
+            <End Role="tb_Comments" EntitySet="tb_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_Commen__UserI__34C8D9D1" Association="Self.FK__tb_Commen__UserI__34C8D9D1">
+            <End Role="tb_UserInfo" EntitySet="tb_UserInfo" />
+            <End Role="tb_Comments" EntitySet="tb_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_OrderS__Order__60A75C0F" Association="Self.FK__tb_OrderS__Order__60A75C0F">
+            <End Role="tb_Order" EntitySet="tb_Order" />
+            <End Role="tb_OrderSp" EntitySet="tb_OrderSp" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_ReceAd__UserI__21B6055D" Association="Self.FK__tb_ReceAd__UserI__21B6055D">
+            <End Role="tb_UserInfo" EntitySet="tb_UserInfo" />
+            <End Role="tb_ReceAddress" EntitySet="tb_ReceAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_ShopCa__UserI__286302EC" Association="Self.FK__tb_ShopCa__UserI__286302EC">
+            <End Role="tb_UserInfo" EntitySet="tb_UserInfo" />
+            <End Role="tb_ShopCart" EntitySet="tb_ShopCart" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FlowerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="tb_Collection">
+          <Key>
+            <PropertyRef Name="CollecID" />
+          </Key>
+          <Property Name="CollecID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="GoodID" Type="Int32" />
+          <Property Name="GoodName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="GoodPrice" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="GoodImg" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="GoodState" Type="Int32" />
+          <NavigationProperty Name="tb_UserInfo" Relationship="Self.FK__tb_Collec__UserI__24927208" FromRole="tb_Collection" ToRole="tb_UserInfo" />
+        </EntityType>
+        <EntityType Name="tb_Comments">
+          <Key>
+            <PropertyRef Name="CommID" />
+          </Key>
+          <Property Name="CommID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GoodID" Type="Int32" />
+          <Property Name="GoodSort" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CommTime" Type="DateTime" Precision="0" />
+          <Property Name="CommImg" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ManagerComm" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fabulous" Type="Int32" />
+          <NavigationProperty Name="tb_GoodsInfo" Relationship="Self.FK__tb_Commen__GoodI__33D4B598" FromRole="tb_Comments" ToRole="tb_GoodsInfo" />
+          <NavigationProperty Name="tb_UserInfo" Relationship="Self.FK__tb_Commen__UserI__34C8D9D1" FromRole="tb_Comments" ToRole="tb_UserInfo" />
+          <Property Name="CommText" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tb_ConsumeData">
+          <Key>
+            <PropertyRef Name="ConID" />
+          </Key>
+          <Property Name="ConID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="ConMoney" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ConRemarks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ConType" Type="Int32" />
+          <Property Name="OrderNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ConTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tb_FlowerAdmin">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdminLoginName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AdminLoginPwd" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AdminName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AdminTel" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AdminSex" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="AdminImg" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tb_GoodsInfo">
+          <Key>
+            <PropertyRef Name="GoodID" />
+          </Key>
+          <Property Name="GoodID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GoodName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GoodType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GoodSort" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FlowerLanguage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GoodMainImg" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GoodDataImg" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GoodStock" Type="Int32" />
+          <Property Name="GoodState" Type="Int32" />
+          <Property Name="GoodComments" Type="Int32" />
+          <Property Name="GoodMsales" Type="Int32" />
+          <Property Name="GoodCollection" Type="Int32" />
+          <Property Name="GoodPrice" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="GoodFreight" Type="Int32" />
+          <NavigationProperty Name="tb_Comments" Relationship="Self.FK__tb_Commen__GoodI__33D4B598" FromRole="tb_GoodsInfo" ToRole="tb_Comments" />
+        </EntityType>
+        <EntityType Name="tb_ReceAddress">
+          <Key>
+            <PropertyRef Name="ReceID" />
+          </Key>
+          <Property Name="ReceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="ReceName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ReceAddr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReceTel" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tb_UserInfo" Relationship="Self.FK__tb_ReceAd__UserI__21B6055D" FromRole="tb_ReceAddress" ToRole="tb_UserInfo" />
+        </EntityType>
+        <EntityType Name="tb_ShopCart">
+          <Key>
+            <PropertyRef Name="ShopID" />
+          </Key>
+          <Property Name="ShopID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="GoodID" Type="Int32" />
+          <Property Name="GoodName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="GoodPrice" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="GoodSort" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GoodNum" Type="Int32" />
+          <Property Name="GoodImg" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GoodState" Type="Int32" />
+          <NavigationProperty Name="tb_UserInfo" Relationship="Self.FK__tb_ShopCa__UserI__286302EC" FromRole="tb_ShopCart" ToRole="tb_UserInfo" />
+          <Property Name="GoodInfo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tb_UserInfo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserLoginName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserLoginPwd" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserPayPwd" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UserTel" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UserSex" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="UserMark" Type="Int32" />
+          <Property Name="UserImg" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserCollection" Type="Int32" />
+          <Property Name="UserShopCort" Type="Int32" />
+          <Property Name="UserDatetime" Type="DateTime" Precision="3" />
+          <Property Name="UserState" Type="Int32" />
+          <Property Name="SealTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tb_Collection" Relationship="Self.FK__tb_Collec__UserI__24927208" FromRole="tb_UserInfo" ToRole="tb_Collection" />
+          <NavigationProperty Name="tb_Comments" Relationship="Self.FK__tb_Commen__UserI__34C8D9D1" FromRole="tb_UserInfo" ToRole="tb_Comments" />
+          <NavigationProperty Name="tb_ReceAddress" Relationship="Self.FK__tb_ReceAd__UserI__21B6055D" FromRole="tb_UserInfo" ToRole="tb_ReceAddress" />
+          <NavigationProperty Name="tb_ShopCart" Relationship="Self.FK__tb_ShopCa__UserI__286302EC" FromRole="tb_UserInfo" ToRole="tb_ShopCart" />
+        </EntityType>
+        <Association Name="FK__tb_Collec__UserI__24927208">
+          <End Role="tb_UserInfo" Type="Self.tb_UserInfo" Multiplicity="0..1" />
+          <End Role="tb_Collection" Type="Self.tb_Collection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tb_Collection">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_Commen__GoodI__33D4B598">
+          <End Role="tb_GoodsInfo" Type="Self.tb_GoodsInfo" Multiplicity="0..1" />
+          <End Role="tb_Comments" Type="Self.tb_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_GoodsInfo">
+              <PropertyRef Name="GoodID" />
+            </Principal>
+            <Dependent Role="tb_Comments">
+              <PropertyRef Name="GoodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_Commen__UserI__34C8D9D1">
+          <End Role="tb_UserInfo" Type="Self.tb_UserInfo" Multiplicity="0..1" />
+          <End Role="tb_Comments" Type="Self.tb_Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tb_Comments">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_ReceAd__UserI__21B6055D">
+          <End Role="tb_UserInfo" Type="Self.tb_UserInfo" Multiplicity="0..1" />
+          <End Role="tb_ReceAddress" Type="Self.tb_ReceAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tb_ReceAddress">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__tb_ShopCa__UserI__286302EC">
+          <End Role="tb_UserInfo" Type="Self.tb_UserInfo" Multiplicity="0..1" />
+          <End Role="tb_ShopCart" Type="Self.tb_ShopCart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_UserInfo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="tb_ShopCart">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FlowerDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="tb_Collection" EntityType="Self.tb_Collection" />
+          <EntitySet Name="tb_Comments" EntityType="Self.tb_Comments" />
+          <EntitySet Name="tb_ConsumeData" EntityType="Self.tb_ConsumeData" />
+          <EntitySet Name="tb_FlowerAdmin" EntityType="Self.tb_FlowerAdmin" />
+          <EntitySet Name="tb_GoodsInfo" EntityType="Self.tb_GoodsInfo" />
+          <EntitySet Name="tb_ReceAddress" EntityType="Self.tb_ReceAddress" />
+          <EntitySet Name="tb_ShopCart" EntityType="Self.tb_ShopCart" />
+          <EntitySet Name="tb_UserInfo" EntityType="Self.tb_UserInfo" />
+          <AssociationSet Name="FK__tb_Collec__UserI__24927208" Association="Self.FK__tb_Collec__UserI__24927208">
+            <End Role="tb_UserInfo" EntitySet="tb_UserInfo" />
+            <End Role="tb_Collection" EntitySet="tb_Collection" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_Commen__GoodI__33D4B598" Association="Self.FK__tb_Commen__GoodI__33D4B598">
+            <End Role="tb_GoodsInfo" EntitySet="tb_GoodsInfo" />
+            <End Role="tb_Comments" EntitySet="tb_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_Commen__UserI__34C8D9D1" Association="Self.FK__tb_Commen__UserI__34C8D9D1">
+            <End Role="tb_UserInfo" EntitySet="tb_UserInfo" />
+            <End Role="tb_Comments" EntitySet="tb_Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_ReceAd__UserI__21B6055D" Association="Self.FK__tb_ReceAd__UserI__21B6055D">
+            <End Role="tb_UserInfo" EntitySet="tb_UserInfo" />
+            <End Role="tb_ReceAddress" EntitySet="tb_ReceAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK__tb_ShopCa__UserI__286302EC" Association="Self.FK__tb_ShopCa__UserI__286302EC">
+            <End Role="tb_UserInfo" EntitySet="tb_UserInfo" />
+            <End Role="tb_ShopCart" EntitySet="tb_ShopCart" />
+          </AssociationSet>
+          <EntitySet Name="tb_Order" EntityType="FlowerDBModel.tb_Order" />
+          <EntitySet Name="tb_OrderSp" EntityType="FlowerDBModel.tb_OrderSp" />
+          <AssociationSet Name="FK__tb_OrderS__Order__60A75C0F" Association="FlowerDBModel.FK__tb_OrderS__Order__60A75C0F">
+            <End Role="tb_Order" EntitySet="tb_Order" />
+            <End Role="tb_OrderSp" EntitySet="tb_OrderSp" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tb_Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="ReceName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ReceAddr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReceTel" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="GoodFreight" Type="Int32" />
+          <Property Name="GoodDiscount" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OrderMoney" Type="String" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="OrderState" Type="Int32" />
+          <Property Name="CreateTime" Type="DateTime" Precision="3" />
+          <Property Name="PaymentTime" Type="DateTime" Precision="3" />
+          <Property Name="DeliverTime" Type="DateTime" Precision="3" />
+          <Property Name="ReceiveTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tb_OrderSp" Relationship="FlowerDBModel.FK__tb_OrderS__Order__60A75C0F" FromRole="tb_Order" ToRole="tb_OrderSp" />
+          <Property Name="GoodNames" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="UserVisible" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tb_OrderSp">
+          <Key>
+            <PropertyRef Name="DataID" />
+          </Key>
+          <Property Name="DataID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" />
+          <Property Name="GoodID" Type="Int32" />
+          <Property Name="GoodName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GoodType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GoodSort" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="GoodPrice" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="GoodNums" Type="Int32" />
+          <Property Name="GoodSum" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="tb_Order" Relationship="FlowerDBModel.FK__tb_OrderS__Order__60A75C0F" FromRole="tb_OrderSp" ToRole="tb_Order" />
+          <Property Name="GoodImg" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK__tb_OrderS__Order__60A75C0F">
+          <End Type="FlowerDBModel.tb_Order" Role="tb_Order" Multiplicity="0..1" />
+          <End Type="FlowerDBModel.tb_OrderSp" Role="tb_OrderSp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Order">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="tb_OrderSp">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FlowerDBModelStoreContainer" CdmEntityContainer="FlowerDBEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FlowerDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_Collection">
+            <EntityTypeMapping TypeName="FlowerDBModel.tb_Collection">
+              <MappingFragment StoreEntitySet="tb_Collection">
+                <ScalarProperty Name="CollecID" ColumnName="CollecID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="GoodID" ColumnName="GoodID" />
+                <ScalarProperty Name="GoodName" ColumnName="GoodName" />
+                <ScalarProperty Name="GoodPrice" ColumnName="GoodPrice" />
+                <ScalarProperty Name="GoodImg" ColumnName="GoodImg" />
+                <ScalarProperty Name="GoodState" ColumnName="GoodState" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_Comments">
+            <EntityTypeMapping TypeName="FlowerDBModel.tb_Comments">
+              <MappingFragment StoreEntitySet="tb_Comments">
+                <ScalarProperty Name="CommText" ColumnName="CommText" />
+                <ScalarProperty Name="CommID" ColumnName="CommID" />
+                <ScalarProperty Name="GoodID" ColumnName="GoodID" />
+                <ScalarProperty Name="GoodSort" ColumnName="GoodSort" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="CommTime" ColumnName="CommTime" />
+                <ScalarProperty Name="CommImg" ColumnName="CommImg" />
+                <ScalarProperty Name="ManagerComm" ColumnName="ManagerComm" />
+                <ScalarProperty Name="Fabulous" ColumnName="Fabulous" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ConsumeData">
+            <EntityTypeMapping TypeName="FlowerDBModel.tb_ConsumeData">
+              <MappingFragment StoreEntitySet="tb_ConsumeData">
+                <ScalarProperty Name="ConID" ColumnName="ConID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ConMoney" ColumnName="ConMoney" />
+                <ScalarProperty Name="ConRemarks" ColumnName="ConRemarks" />
+                <ScalarProperty Name="ConType" ColumnName="ConType" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="ConTime" ColumnName="ConTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_FlowerAdmin">
+            <EntityTypeMapping TypeName="FlowerDBModel.tb_FlowerAdmin">
+              <MappingFragment StoreEntitySet="tb_FlowerAdmin">
+                <ScalarProperty Name="AdminID" ColumnName="AdminID" />
+                <ScalarProperty Name="AdminLoginName" ColumnName="AdminLoginName" />
+                <ScalarProperty Name="AdminLoginPwd" ColumnName="AdminLoginPwd" />
+                <ScalarProperty Name="AdminName" ColumnName="AdminName" />
+                <ScalarProperty Name="AdminTel" ColumnName="AdminTel" />
+                <ScalarProperty Name="AdminSex" ColumnName="AdminSex" />
+                <ScalarProperty Name="AdminImg" ColumnName="AdminImg" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_GoodsInfo">
+            <EntityTypeMapping TypeName="FlowerDBModel.tb_GoodsInfo">
+              <MappingFragment StoreEntitySet="tb_GoodsInfo">
+                <ScalarProperty Name="GoodID" ColumnName="GoodID" />
+                <ScalarProperty Name="GoodName" ColumnName="GoodName" />
+                <ScalarProperty Name="GoodType" ColumnName="GoodType" />
+                <ScalarProperty Name="GoodSort" ColumnName="GoodSort" />
+                <ScalarProperty Name="FlowerLanguage" ColumnName="FlowerLanguage" />
+                <ScalarProperty Name="GoodMainImg" ColumnName="GoodMainImg" />
+                <ScalarProperty Name="GoodDataImg" ColumnName="GoodDataImg" />
+                <ScalarProperty Name="GoodStock" ColumnName="GoodStock" />
+                <ScalarProperty Name="GoodState" ColumnName="GoodState" />
+                <ScalarProperty Name="GoodComments" ColumnName="GoodComments" />
+                <ScalarProperty Name="GoodMsales" ColumnName="GoodMsales" />
+                <ScalarProperty Name="GoodCollection" ColumnName="GoodCollection" />
+                <ScalarProperty Name="GoodPrice" ColumnName="GoodPrice" />
+                <ScalarProperty Name="GoodFreight" ColumnName="GoodFreight" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ReceAddress">
+            <EntityTypeMapping TypeName="FlowerDBModel.tb_ReceAddress">
+              <MappingFragment StoreEntitySet="tb_ReceAddress">
+                <ScalarProperty Name="ReceID" ColumnName="ReceID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ReceName" ColumnName="ReceName" />
+                <ScalarProperty Name="ReceAddr" ColumnName="ReceAddr" />
+                <ScalarProperty Name="ReceTel" ColumnName="ReceTel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ShopCart">
+            <EntityTypeMapping TypeName="FlowerDBModel.tb_ShopCart">
+              <MappingFragment StoreEntitySet="tb_ShopCart">
+                <ScalarProperty Name="GoodInfo" ColumnName="GoodInfo" />
+                <ScalarProperty Name="ShopID" ColumnName="ShopID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="GoodID" ColumnName="GoodID" />
+                <ScalarProperty Name="GoodName" ColumnName="GoodName" />
+                <ScalarProperty Name="GoodPrice" ColumnName="GoodPrice" />
+                <ScalarProperty Name="GoodSort" ColumnName="GoodSort" />
+                <ScalarProperty Name="GoodNum" ColumnName="GoodNum" />
+                <ScalarProperty Name="GoodImg" ColumnName="GoodImg" />
+                <ScalarProperty Name="GoodState" ColumnName="GoodState" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_UserInfo">
+            <EntityTypeMapping TypeName="FlowerDBModel.tb_UserInfo">
+              <MappingFragment StoreEntitySet="tb_UserInfo">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserLoginName" ColumnName="UserLoginName" />
+                <ScalarProperty Name="UserLoginPwd" ColumnName="UserLoginPwd" />
+                <ScalarProperty Name="UserPayPwd" ColumnName="UserPayPwd" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserTel" ColumnName="UserTel" />
+                <ScalarProperty Name="UserSex" ColumnName="UserSex" />
+                <ScalarProperty Name="UserMark" ColumnName="UserMark" />
+                <ScalarProperty Name="UserImg" ColumnName="UserImg" />
+                <ScalarProperty Name="UserCollection" ColumnName="UserCollection" />
+                <ScalarProperty Name="UserShopCort" ColumnName="UserShopCort" />
+                <ScalarProperty Name="UserDatetime" ColumnName="UserDatetime" />
+                <ScalarProperty Name="UserState" ColumnName="UserState" />
+                <ScalarProperty Name="SealTime" ColumnName="SealTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_Order">
+            <EntityTypeMapping TypeName="FlowerDBModel.tb_Order">
+              <MappingFragment StoreEntitySet="tb_Order">
+                <ScalarProperty Name="UserVisible" ColumnName="UserVisible" />
+                <ScalarProperty Name="GoodNames" ColumnName="GoodNames" />
+                <ScalarProperty Name="ReceiveTime" ColumnName="ReceiveTime" />
+                <ScalarProperty Name="DeliverTime" ColumnName="DeliverTime" />
+                <ScalarProperty Name="PaymentTime" ColumnName="PaymentTime" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="OrderState" ColumnName="OrderState" />
+                <ScalarProperty Name="OrderMoney" ColumnName="OrderMoney" />
+                <ScalarProperty Name="GoodDiscount" ColumnName="GoodDiscount" />
+                <ScalarProperty Name="GoodFreight" ColumnName="GoodFreight" />
+                <ScalarProperty Name="ReceTel" ColumnName="ReceTel" />
+                <ScalarProperty Name="ReceAddr" ColumnName="ReceAddr" />
+                <ScalarProperty Name="ReceName" ColumnName="ReceName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_OrderSp">
+            <EntityTypeMapping TypeName="FlowerDBModel.tb_OrderSp">
+              <MappingFragment StoreEntitySet="tb_OrderSp">
+                <ScalarProperty Name="GoodImg" ColumnName="GoodImg" />
+                <ScalarProperty Name="GoodSum" ColumnName="GoodSum" />
+                <ScalarProperty Name="GoodNums" ColumnName="GoodNums" />
+                <ScalarProperty Name="GoodPrice" ColumnName="GoodPrice" />
+                <ScalarProperty Name="GoodSort" ColumnName="GoodSort" />
+                <ScalarProperty Name="GoodType" ColumnName="GoodType" />
+                <ScalarProperty Name="GoodName" ColumnName="GoodName" />
+                <ScalarProperty Name="GoodID" ColumnName="GoodID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="DataID" ColumnName="DataID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

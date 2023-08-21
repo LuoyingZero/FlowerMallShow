@@ -1,0 +1,41 @@
+﻿@using FlowerMall.Models;
+@using PagedList.Mvc;
+@model MyPageList
+
+@foreach (var item in Model.userlist)
+{
+    <tr>
+        <td>@item.UserID</td>
+        <td>
+            <img style="width:180px;height:180px;" src="@item.UserImg" />
+        </td>
+        <td>@item.UserAcc</td>
+        <td>@item.UserName</td>
+        <td>@item.UserDatetime</td>
+        @if (item.UserConMoney == 0)
+        {
+            <td>0.00</td>
+        }
+        else
+        {
+            <td>@item.UserConMoney</td>
+        }
+        @*<td>
+            <button class="btn btn-primary" onclick="ReadUserInfo(@item.UserID)">查看详情</button>
+        </td>*@
+        <td>
+            @if (item.UserState == 0)
+            {
+                <button class="btn btn-success" onclick="IceAcc(@item.UserID)">封停账号</button>
+            }
+            else if (item.UserState == 1 || item.UserState == 2)
+            {
+                <button class="btn btn-danger" onclick="MeltAcc(@item.UserID)">解封账号</button>
+            }
+            else
+            {
+                <button class="btn btn-dark" onclick="ErrorAcc(@item.UserID)">账号异常</button>
+            }
+        </td>
+    </tr>
+}

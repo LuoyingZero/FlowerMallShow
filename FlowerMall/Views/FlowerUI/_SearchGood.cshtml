@@ -1,0 +1,25 @@
+﻿@using FlowerMall.Models;
+@using PagedList.Mvc;
+@model MyPageList
+
+@if (Model.goodlist.Count > 0)
+{
+    foreach (var item in Model.goodlist)
+    {
+        <a href="/FlowerUI/details/@item.GoodID">
+            <div class="contGood_Item">
+                <div class="conGood_ItemImg">
+                    <img style="width: 200px; height: 250px;" src="@item.GoodMainImg" />
+                </div>
+                <br />
+                <span class="search_con_goodprice">￥@item.GoodPrice</span>
+                <span class="search_con_goodname">@item.GoodName</span>
+            </div>
+        </a>
+    }
+    @Html.PagedListPager(Model.goodlist, page => Url.Action("Search", new { page }))
+}
+else
+{
+    <span>未找到指定的商品</span>
+}

@@ -1,0 +1,398 @@
+﻿@using FlowerMall.Models;
+
+@{
+    ViewBag.Title = "独属于你的美好回忆";
+    Layout = "~/Views/Shared/Main_body.cshtml";
+    <link href="~/Content/FlowerUI/order.css" rel="stylesheet" />
+}
+
+@*付款窗口*@
+<div id="float_area">
+    <div id="float_area_pay">
+        <span id="pay_id" style="display: none;"></span>
+        <span class="pay_tit">确认付款</span>
+        <input class="pay_input" id="UserPayPwd" name="UserPayPwd" onblur="ReqPayPwd()" oninput="value=value.replace(/[^0-9]+$/,'')" data-toggle="tooltip" data-placement="top" title="请输入6位纯数字的支付密码" type="password" maxlength="6" />
+        <div style="text-align:right;">
+            <button id="pay_btn" class="pay_btn btn btn-primary" onclick="OrderPay()">付款</button>
+            <button class="pay_btn btn btn-secondary" onclick="CancelPay()">取消</button>
+        </div>
+    </div>
+</div>
+
+@*评价窗口*@
+<div class="modal fade" id="myModal" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">请输入商品评价</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                
+                <div id="orderModal_Ajax">
+                    <div style="margin-bottom:10px;">
+                        <span style="font-size:18px;">商品名称</span>
+                        <div>
+                            <img class="modalComm_img" src="~/Images/GoodsInfo/红色康乃馨.JPG" />
+                            <textarea class="modalComm_text" maxlength="50" placeholder="页面出现错误,请联系管理员。错误代码：OrDaAj-1"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="reqDataSub()">发布评论</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div style="width:70%;margin:10px auto;">
+
+    <div>
+        @using (Ajax.BeginForm("OrderAjax", "FlowerUI", new AjaxOptions
+        {
+            UpdateTargetId = "Ajax_Area_Order_Info",
+            InsertionMode = InsertionMode.Replace
+        }))
+        {
+            <div style="width:100%;margin:20px 0px">
+                <button name="state_btn" class="top_tool_Sel" style="outline:none" onclick="SelState(5)">所有订单</button>
+                <button name="state_btn" class="top_tool" style="outline:none" onclick="SelState(0)">等待付款</button>
+                <button name="state_btn" class="top_tool" style="outline:none" onclick="SelState(1)">等待发货</button>
+                <button name="state_btn" class="top_tool" style="outline:none" onclick="SelState(2)">正在运输</button>
+                <button name="state_btn" class="top_tool" style="outline:none" onclick="SelState(3)">等待评价</button>
+                <button name="state_btn" class="top_tool" style="outline:none" onclick="SelState(4)">交易完成</button>
+            </div>
+            <select id="OrderSel" class="sel" onchange="SelCond()">
+                <option value="spname">商品名称检索</option>
+                <option value="udata">订单编号检索</option>
+            </select>
+            <input type="text" id="order_state" name="state" value="5" style="display:none;" />
+            <input id="sel_input" name="spname" class="sel sel_input" style="width:300px;" type="text" placeholder="输入商品标题或订单号进行搜索" />
+            <button class="sel sel_btn" style="outline:none">订单搜索</button>
+        }
+        <table style="width:100%;margin:20px 0px;">
+            <tr class="ShowTit">
+                <td style="width:25%;">宝贝</td>
+                <td style="width:15%;">单价</td>
+                <td style="width:15%;">数量</td>
+                <td style="width:15%;">总付款</td>
+                <td style="width:15%;">订单状态</td>
+                <td style="width:15%;">交易操作</td>
+
+            </tr>
+        </table>
+
+        <div id="Ajax_Area_Order_Info">
+            <!--这一块是动态查询-->
+            @foreach (var item in ViewBag.uOrder as List<tb_Order>)
+            {
+                <div class="orderItem">
+                    <div class="orderItem_title">
+                        <span style="padding:0px 10px;">@item.CreateTime</span> <span>订单号 @item.OrderNumber</span>
+                        <span style="float:right;padding:0 20px;"><a href="#" onclick="OrderDel('@item.OrderID','@item.OrderState')">删除订单</a></span>
+                    </div>
+                    <table style="width: 100%;">
+                        <!--同样动态，查询从表-->
+                        @{
+                            var inum = 0;
+                            foreach (var spitem in ViewBag.formOrder as List<tb_OrderSp>)
+                            {
+                                if (spitem.OrderID == item.OrderID)
+                                {
+                                    <tr style="font-size:14px;border-top:1px solid gray;">
+                                        <td class=orderItem_3>
+                                            <div style="float:left;margin: 0 0 10px 10px;">
+                                                <img style="width:100px;height:100px;" src="@spitem.GoodImg" />
+                                            </div>
+                                            <div class="orderName">
+                                                <span>@spitem.GoodName</span>
+                                            </div>
+                                        </td>
+                                        <td class="orderItem_2">
+                                            ￥@spitem.GoodPrice
+                                        </td>
+                                        <td class="orderItem_2">
+                                            @spitem.GoodNums
+                                        </td>
+                                        @if (inum == 0)
+                                        {
+                                            <td class="orderItem_2">
+                                                <span style="font-weight:700">￥@item.OrderMoney</span>
+                                                <br />
+                                                <span>（含运费：￥@item.GoodFreight）</span>
+                                            </td>
+                                            <td class="orderItem_2">
+                                                @if (item.OrderState == 0)
+                                                {
+                                                    <span>暂未付款</span><br /><span><a href="#" onclick="ShowPay(@item.OrderID)">点击付款</a></span>
+                                                }
+                                                else if (item.OrderState == 1)
+                                                {
+                                                    <span>等待发货</span>
+                                                }
+                                                else if (item.OrderState == 2)
+                                                {
+                                                    <span>正在运输</span><br /><span><a href="/flowerui/ordermove?id=@item.OrderID">查看物流</a></span>
+                                                    <br /><br />
+                                                    <span><a href="/flowerui/ordercon?oid=@item.OrderID" onclick="return confirm('请确认已收到货物！')">确认收货</a></span>
+                                                }
+                                                else if (item.OrderState == 3)
+                                                {
+                                                    using (Ajax.BeginForm("OrderDataAjax", "FlowerUI", new AjaxOptions
+                                                    {
+                                                        UpdateTargetId = "orderModal_Ajax",
+                                                        InsertionMode = InsertionMode.Replace
+                                                    }))
+                                                    {
+                                                        <input type="hidden" name="selectid" value="@item.OrderID"/>
+                                                        <button type="submit" class="btn text_red" data-toggle="modal" data-target="#myModal">等待评价</button>
+                                                    }
+                                                }
+                                                else if (item.OrderState == 4)
+                                                {
+                                                    <span>交易完成</span>
+                                                }
+                                            </td>
+                                            <td class="orderItem_2">
+                                                <span><a href="#" onclick="alert('这么好的花，居然有人想退款？不会吧不会吧不会吧')">申请退款</a></span>
+                                                <br />
+                                                <span><a onclick="ShowQR(@item.OrderID)">查看详情</a></span>
+                                                <div id="QR_@item.OrderID" class="QR_Area" onclick="CloseQR(@item.OrderID)">
+                                                    <div>点击即可关闭</div>
+                                                    <img class="qr_img" src="#" />
+                                                </div>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="orderItem_2">
+                                            </td>
+                                            <td class="orderItem_2">
+                                            </td>
+                                            <td class="orderItem_2">
+                                            </td>
+                                        }
+                                        @{inum += 1;}
+                                    </tr>
+                                }
+                            }
+                        }
+                    </table>
+                </div>
+            }
+        </div>
+
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        //模态框取消点击背景关闭
+        //$("#myModal").modal({
+        //    //点击背景不关闭
+        //    backdrop: "static",
+        //    //触发键盘esc事件时不关闭
+        //    keyboard: false
+        //});
+
+        //下拉框的切换事件
+        function SelCond() {
+            //获取当前代表的选项
+            var s = $("#OrderSel").val();
+            //alert(s);
+            //切换输入框的name值
+            document.getElementById("sel_input").name = s;
+        }
+        //分类按钮
+        function SelState(id) {
+            //设置查询的类型
+            $("#order_state").val(id);
+            //获取所有的分类按钮
+            var x = document.getElementsByName("state_btn").length;
+            for (var i = 0; i < x; i++) {
+                //alert(id);
+                document.getElementsByName("state_btn")[i].className = "top_tool";
+            }
+            if (id == 5) {
+                document.getElementsByName("state_btn")[0].className = "top_tool_Sel";
+            } else {
+                id = id += 1;
+                document.getElementsByName("state_btn")[id].className = "top_tool_Sel";
+            }
+        }
+
+
+        /*展示付款区域*/
+        function ShowPay(id) {
+            document.getElementById("float_area").style.display = "block";
+            //document.getElementById("pay_btn").setAttribute("disabled", true);
+            $("#pay_id").html(id);
+        }
+        /*关闭付款区域*/
+        function CancelPay() {
+            var read = confirm('是否取消付款？');
+            if (read) {
+                $("#pay_id").html("");
+                $("#UserPayPwd").val("");
+                document.getElementById("float_area").style.display = "none";
+            }
+        }
+        //支付密码验证
+        function ReqPayPwd() {
+            var name = $("#UserPayPwd").val();
+            if (name.length != 6) {
+
+                //document.getElementById("pay_btn").setAttribute("disabled", true);
+                return false;
+            } else {
+                //document.getElementById("pay_btn").removeAttribute("disabled");
+                return true;
+            }
+        }
+        //付款
+        function OrderPay() {
+            var pay = $("#UserPayPwd").val();
+            if (pay.length != 6) {
+                alert('请输入6位的支付密码！');
+
+            } else {
+                var orderid = $("#pay_id").html();
+                //alert(orderid)
+                //执行ajax
+                $.ajax({
+                    url: "/FlowerUI/OrderPay",
+                    type: "post",
+                    data: { "oid": orderid, "pay": pay },
+                    success: function (result) {
+                        console.log(result);
+                        if (result == "true") {
+                            alert('付款成功')
+                            window.location.href = "/FlowerUI/Order";//后期可以换成 查询的函数
+                        }
+                        else if (result == "payerror") {
+                            alert("支付密码输入错误！");
+                        }
+                    }
+                });
+            }
+        }
+        //删除
+        function OrderDel(id, sta) {
+            var req = confirm('警告：\n该操作无法撤销，请再次确认：是否【删除】该订单？');
+            //alert(sta + "][" + id);
+            if (req) {
+                if (sta == 0 || sta == 4) {
+                    //alert('可以删除，准备执行ajax')
+                    $.ajax({
+                        url: "/flowerui/OrderDel",
+                        type: "post",
+                        data: { "oid": id },
+                        success: function (result) {
+                            if (result == "true") {
+                                window.location.href = '/flowerui/order';
+                            } else if (result == "notlogin") {
+                                alert('登录状态超时，请重新登录。');
+                                window.location.href = '/FlowerUI/Login'
+                            }
+                        }
+                    });
+                } else {
+                    alert('当前订单交易未完成，请等交易完成后在删除。');
+                }
+            } else {
+                return false;
+            }
+        }
+
+
+        //展示二维码区域
+        function ShowQR(id) {
+            //alert(id);
+            //关闭所有二维码区域
+            var x = document.getElementsByClassName("QR_Area").length;
+            for (var i = 0; i < x; i++) {
+                document.getElementsByClassName("QR_Area")[i].style.display = "none";
+            }
+
+            //展示当前订单的二维码
+            document.getElementById("QR_" + id).style.display = "block";
+
+        }
+        //关闭当前二维码区域
+        function CloseQR(id) {
+            document.getElementById("QR_" + id).style.display = "none";
+        }
+
+        //评价功能
+        function reqDataSub() {
+            var x = document.getElementsByClassName("modalAjaxCommItem").length;
+            //alert("评论总数量：" + x);
+            var plState = true;
+            if (x >= 1) {
+                var oID = $("#Order_ID").val();
+                if (oID == null || oID == "") {
+                    plState = false;
+                    alert('页面出现错误，请检查你的网络连接');
+                } else {
+                    //声明数组
+                    var cgID = new Array();
+                    var cgPL = new Array();
+                    for (var i = 0; i < x; i++) {
+                        //获取对应的数据，并存储到数组中
+                        var gid = $("#CommGoodID_" + i).val();
+                        var pl = $("#CommText_" + i).val();
+                        //alert("商品id：" + gid + "\t评论内容：" + pl);
+                        if (gid == null || gid == "") {
+                            plState = false;
+                            alert('页面出现错误，请检查你的网络连接');
+                            break;
+                        } else if (pl == null || pl == "" || pl.replace(/\s*/g, "") == "") {
+                            plState = false;
+                            alert('请输入商品的评论！');
+                            break;
+                            //改变商品边框颜色
+                        } else {
+                            cgID[i] = gid;
+                            cgPL[i] = (pl.replace(/^\s*|\s*$/g, "")).substr(1, 50);
+                        }
+                    }
+                    if (plState) {
+                        $.ajax({
+                            url: "/FlowerUI/OrderGoodPL",
+                            type: "post",
+                            data: { "oID": oID, "cgID": cgID, "cgPL": cgPL },
+                            async: false,
+                            success: function (req) {
+                                if (req == "notlogin") {
+                                    alert('登录状态超时，请重新登录');
+                                    location.reload(true);
+                                } else if (req == "true") {
+                                    alert('评论成功');
+                                    location.reload(true);
+                                } else {
+                                    alert('评论失败，未能链接服务器。\n错误代码：PLAj-Error-404')
+                                    location.reload(true);
+                                }
+                            }
+                        })
+                    }
+                }
+            } else {
+                alert('页面出现错误，请检查你的网络');
+            }
+        }
+
+    </script>
+</div>
+

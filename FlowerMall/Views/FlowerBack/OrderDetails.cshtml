@@ -1,0 +1,277 @@
+﻿@using FlowerMall.Models;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>订单详情</title>
+    <link href="~/Content/bs4.pop.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/umd/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bs4.pop.js"></script>
+    <link href="~/Content/FlowerBack/animate.css" rel="stylesheet" />
+    <link href="~/Content/FlowerBack/app-style.css" rel="stylesheet" />
+    <link href="~/Content/FlowerBack/icons.css" rel="stylesheet" />
+    <link href="~/Content/FlowerBack/pace.min.css" rel="stylesheet" />
+    <link href="~/Content/FlowerBack/sidebar-menu.css" rel="stylesheet" />
+    <style>
+        #MapArea {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="bg-theme bg-theme1">
+
+    <!-- Start wrapper-->
+    <div id="wrapper">
+
+        <!--Start sidebar-wrapper-->
+        <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
+            <div class="brand-logo">
+                <a href="~/flowerui/index" target="_blank">
+                    <img src="~/Images/花语logo.png" class="" />
+                </a>
+            </div>
+
+            <ul class="sidebar-menu do-nicescrol">
+                <li class="sidebar-header">花语馨苑后台管理界面</li>
+                <li>
+                    <a href="~/flowerback/main">
+                        <i class="zmdi zmdi-view-dashboard"></i> <span>后台首页</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/flowerback/goodinfo">
+                        <i class="zmdi zmdi-book-image"></i> <span>商品管理</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/flowerback/goodadd">
+                        <i class="zmdi zmdi-assignment-o"></i> <span>上架商品</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="javaScript:alert('请通过[商品管理]页面来修改商品');">
+                        <i class="zmdi zmdi-grid"></i> <span>修改商品</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/flowerback/orderinfo">
+                        <i class="zmdi zmdi-calendar-check"></i> <span>订单管理</span>
+                        <small class="badge float-right badge-light">New</small>
+                    </a>
+                </li>
+
+                <li class="active">
+                    <a href="#">
+                        <i class="zmdi zmdi-assignment-check"></i> <span>订单详情</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="~/FlowerBack/UserInfo">
+                        <i class="zmdi zmdi-account-circle"></i> <span>用户管理</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+        <header style="height: 60px; background-color: rgba(0,0,0,.2);"></header>
+
+        <div class="content-wrapper">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="MapArea">
+
+                                </div>
+                                <div>
+                                    <div class="card-title">
+                                        收件人信息
+                                    </div>
+                                    收件人：<span>@ViewBag.uOrder.ReceName</span>
+                                    手机号：
+                                    <span>@ViewBag.uOrder.ReceTel</span>
+                                    <br />
+                                    收货地址：<span id="rece_addr">@ViewBag.uOrder.ReceAddr</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    订单信息
+                                </div>
+                                <div class="row" style="margin-bottom:20px;">
+                                    <div class="col-6">
+                                        订单状态：
+                                        @{
+                                            if (ViewBag.uOrder.OrderState == 1)
+                                            {
+                                                <span>等待发货</span>
+                                            }
+                                            else if (ViewBag.uOrder.OrderState == 2)
+                                            {
+                                                <span>正在运输</span>
+                                            }
+                                            else if (ViewBag.uOrder.OrderState == 3 || ViewBag.uOrder.OrderState == 4)
+                                            {
+                                                <span>交易完成</span>
+                                            }
+                                            else
+                                            {
+                                                <span>状态异常，请仔细核对订单信息</span>
+                                            }
+                                        }
+                                        <br />
+                                        订单编号：<span>@ViewBag.uOrder.OrderNumber</span>
+                                        <br />
+                                        收货人：<span>@ViewBag.uOrder.ReceName</span>
+                                        <br />
+                                        手机号：<span>@ViewBag.uOrder.ReceTel</span>
+                                        <br />
+                                        收货地址：<span>@ViewBag.uOrder.ReceAddr</span>
+                                        </div>
+                                    <div class="col-6">
+                                        <br />
+                                        付款时间：<span>@ViewBag.uOrder.PaymentTime</span>
+                                        <br />
+                                        发货时间：<span>@ViewBag.uOrder.DeliverTime</span>
+                                        <br />
+                                        收货时间：<span>@ViewBag.uOrder.ReceiveTime</span>
+                                        <br />
+                                        完成时间：<span>@ViewBag.uOrder.ReceiveTime</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="card-title">
+                                        该订单商品信息
+                                    </div>
+                                    <table style="text-align:center;" class="table align-items-center table-flush table-borderless">
+                                        <tr>
+                                            <th style="width:200px;text-align:left;">商品名称</th>
+                                            <th>商品图片</th>
+                                            <th>商品数量</th>
+                                            <th>商品单价</th>
+                                            <th>商品详情</th>
+                                        </tr>
+                                        @{
+                                            foreach (var item in ViewBag.formOrder as List<tb_OrderSp>)
+                                            {
+                                                <tr>
+                                                    <td style="width:200px;text-align:left;">@item.GoodName</td>
+                                                    <td>
+                                                        <img style="width:120px;height:120px;" src="@item.GoodImg" />
+                                                    </td>
+                                                    <td>@item.GoodNums</td>
+                                                    <td>@item.GoodPrice</td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-success" onclick="SelGood(@item.GoodID)">查看详情</button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </table>
+                                </div>
+                                @{
+                                    if (ViewBag.uOrder.OrderState == 1)
+                                    {
+                                        <div>
+                                            <div class="card-title">
+                                                确认发货后请输入单号并提交
+                                            </div>
+                                            <form action="~/flowerBack/OrderExpress" method="post" onsubmit="return OrderNum()" >
+                                                <div class="form-group">
+                                                    <input type="hidden" name="oid" value="@ViewBag.uOrder.OrderID"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control form-control-rounded" id="expnumber" name="expnumber" placeholder="请输入快递单号，测试单号十个零： 0000000000 " autocomplete="off" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="submit" class="btn btn-light px-5" onclick="" value="提交" />
+                                                </div>
+                                            </form>
+                                        </div>
+                                    }
+                                    else if (ViewBag.uOrder.OrderState == 2)
+                                    {
+                                        <div>
+                                            <div class="card-title">
+                                                正在运输中 剩余 <span id="time">13天23时59分59秒</span> 自动确认收货
+                                            </div>
+                                        </div>
+                                    }else if (ViewBag.uOrder.OrderState == 3 || ViewBag.uOrder.OrderState == 4 )
+                                    {
+                                        <div>
+                                            <div class="card-title">
+                                                交易已完成
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=这里写AK"></script>
+    <script type="text/javascript">
+        var rece_area = $("#rece_addr").html();
+        // 百度地图API功能
+        var map = new BMap.Map("MapArea");
+        var point = new BMap.Point(116.331398, 39.897445);
+        map.centerAndZoom(point, 18);
+        map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
+        map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+        // 创建地址解析器实例
+        var myGeo = new BMap.Geocoder();
+        // 将地址解析结果显示在地图上,并调整地图视野
+        myGeo.getPoint(rece_area, function (point) {
+            if (point) {
+                map.centerAndZoom(point, 18);
+                map.addOverlay(new BMap.Marker(point));
+            } else {
+                alert("该收货地址没有解析到结果!");
+            }
+        }, "北京市");
+        function SelGood(id) {
+            window.open("/FlowerUI/Details?id=" + id);
+            //window.location.href = "/flowerui/details?id=" + id;
+        }
+        function OrderNum() {
+            var num = $("#expnumber").val().toString();
+            //alert(num);
+            if (num == "0000000000") {
+                return true;
+            } else {
+                alert('请输入正确的物流单号');
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+﻿* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.top {
+    width: 80%;
+    height: 100px;
+    margin: 0px auto;
+    background-color: white;
+}
+
+.control {
+    /*border: 1px solid red;*/
+    text-align: center;
+    padding: 50px 0px;
+    background-color: darkseagreen;
+}
+
+.req_tit {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+    .req_tit a {
+        color: coral;
+    }
+
+        .req_tit a:hover {
+            color: white;
+            text-decoration: none;
+        }
+
+.req_img {
+    width: 600px;
+    height: 500px;
+    border: 1px solid black;
+    display: inline-block;
+    background-image: url(../../Images/bg_ice.jpg);
+    background-repeat: no-repeat;
+    background-size: 600px;
+    display: inline-block;
+}
+
+.req_form {
+    width: 400px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+/*每一行*/
+.reg_p {
+    width: 350px;
+    border: 1px solid #cacaca;
+    border-radius: 15px;
+    margin: 10px auto;
+    overflow: hidden;
+    background-color: white;
+}
+/*错误提示区域*/
+.error_p {
+    width: 350px;
+    margin: 10px auto;
+    color: red;
+    margin-bottom: -10px;
+}
+/*错误提示*/
+.error_tit {
+    padding-left: 80px;
+}
+/*文字说明*/
+.reg_span {
+    font-size: 14px;
+    padding: 0px 10px;
+    vertical-align: super;
+}
+/*必填标识*/
+.span_fk {
+    padding-left: 10px;
+    margin-right: -5px;
+    color: red;
+    font-size: 18px;
+    font-weight: 700;
+}
+/*输入框*/
+.reg_input {
+    width: 235px;
+    height: 30px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    vertical-align: super;
+}
+
+.reg_file {
+    padding: 7px 0;
+    /* height: 40px; */
+    background-color: #59e6f5;
+    vertical-align: super;
+}

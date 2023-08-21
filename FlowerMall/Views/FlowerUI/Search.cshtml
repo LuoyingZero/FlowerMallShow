@@ -1,0 +1,217 @@
+﻿@using FlowerMall.Models;
+@using PagedList.Mvc;
+@model MyPageList
+
+@{
+    ViewBag.Title = "最美的花，送最美的你";
+    Layout = "~/Views/Shared/Main_body.cshtml";
+    <link href="~/Content/FlowerUI/Search_Top.css" rel="stylesheet" />
+    <style>
+        a:hover{
+            text-decoration: none;
+        }
+
+
+        .Ajax_Area_Search_Good_Show {
+            width: 70%;
+            min-height: 300px;
+            border: 1px solid #ccc;
+            margin: 20px auto;
+        }
+
+
+        /*商品展示区*/
+        .contGood_Item {
+            display: inline-block;
+            width: calc(18% - 4px);
+            text-align: center;
+            line-height: 20px;
+            margin: 10px 1%;
+            border: 1px solid white;
+            color: black;
+        }
+        .conGood_ItemImg {
+            width: 200px;
+            height: 250px;
+            margin: 0px auto;
+            overflow: hidden
+        }
+
+        .contGood_Item:hover {
+            border: 1px solid orange;
+        }
+        /*商品图片*/
+        .contGood_Item img {
+            transition: all linear .6s;
+        }
+
+        .contGood_Item:hover img {
+            transform: scale(1.2);
+        }
+        .contGood_Item:hover .search_con_goodname {
+            
+        }
+        /*商品价格*/
+        .search_con_goodprice {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            color: red;
+            text-align: left;
+            padding-left: 10px;
+            margin: 2px 0px;
+        }
+        /*商品名称*/
+        .search_con_goodname {
+            font-size: 14px;
+            height: 20px;
+            line-height: 20px;
+            padding-left: 10px;
+            text-align: left;
+            overflow: hidden;
+            display: block;
+            color: black;
+        }
+
+
+        /*商品标签*/
+        .sel_lable_btn{
+            width: 50px;
+            height: 25px;
+            border: 1px dashed gray;
+            background: inherit;
+            outline: none;
+            color: black;
+        }
+        .sel_lable_btn:hover{
+            width: 50px;
+            height: 25px;
+            border: 1px solid gray;
+            background-color:white;
+            outline: none;
+            color: orangered;
+        }
+        .sel_lable_btn_re{
+            width: 50px;
+            height: 25px;
+            border: 1px solid gray;
+            background-color:white;
+            outline: none;
+            color: orangered;
+        }
+        /*分页按钮区*/
+        .pagination-container {
+            text-align: right;
+            width: 100%;
+            margin: 20px 0px;
+            padding-right: 3%;
+        }
+        .pagination{
+            display:block;
+        }
+        li {
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            border: 1px solid gray;
+            text-align: center;
+            margin: 0px 3px;
+            line-height: 28px;
+            /*border-radius: 5px;*/
+        }
+        li a {
+            font-size: 18px;
+            color: black;
+        }
+        .active {
+            background: #ff0036;
+            color: white;
+        }
+    </style>
+}
+
+<div id="top_tool_area">
+    <div class="tool_logo">
+        <a href="/FlowerUI/Index" title="花语首页，最美的花和最美的你">
+            <img src="~/Images/花语logo.png" />
+        </a>
+    </div>
+    <div class="tool_search">
+        @*<form action="/flowerui/search" method="get">
+            <div class="Search_Area">
+                <input type="text" name="spname" class="Search_Input" placeholder="请输入商品名" />
+                <button class="Search_Button">搜索</button>
+            </div>
+        </form>*@
+
+        @*@using (Html.BeginForm("Search", "FlowerUI", FormMethod.Get))
+        {
+            <div class="Search_Area">
+                <input type="text" name="spname" class="Search_Input" placeholder="请输入商品名" />
+                <button class="Search_Button">搜索</button>
+            </div>
+        }*@
+
+        @*Ajax异步刷新*@
+        @using (Ajax.BeginForm("SearchAjax", "FlowerUI", new AjaxOptions
+        {
+            UpdateTargetId = "Ajax_Area_Search_Good_Show",
+            InsertionMode = InsertionMode.Replace
+        }))
+        {
+            <div class="Search_Area">
+                <input type="text" name="spname" class="Search_Input" placeholder="请输入商品名" />
+                <button type="submit" class="Search_Button">搜索</button>
+            </div>
+        }
+    </div>
+
+</div>
+@*<div style="width: 70%; margin: 0px auto; background: ghostwhite; border: 1px solid gray; padding: 10px;">
+    @using (Ajax.BeginForm("SearchAjax", "FlowerUI", new AjaxOptions
+    {
+        UpdateTargetId = "Ajax_Area_Search_Good_Show",
+        InsertionMode = InsertionMode.Replace
+    }))
+    {
+        <span>您是不是想找关于：</span>
+        <button class="sel_lable_btn" onclick="SelLable(this)" value="亲情">家人</button>
+        <input type="text" id="search_lable" name="sea_lable"/>
+    }
+</div>*@
+
+
+<!--Ajax异步加载区域-->
+<div id="Ajax_Area_Search_Good_Show" class="Ajax_Area_Search_Good_Show">
+
+    @if (Model.goodlist.Count > 0)
+    {
+        foreach (var item in Model.goodlist)
+        {
+            <a href="/FlowerUI/details/@item.GoodID">
+                <div class="contGood_Item">
+                    <div class="conGood_ItemImg">
+                        <img style="width: 200px; height: 250px;" src="@item.GoodMainImg" />
+                    </div>
+                    <br />
+                    <span class="search_con_goodprice">￥@item.GoodPrice</span>
+                    <span class="search_con_goodname">@item.GoodName</span>
+                </div>
+            </a>
+        }
+        @Html.PagedListPager(Model.goodlist, page => Url.Action("Search", new { page }))
+    }
+    else
+    {
+        <span>未找到指定的商品</span>
+    }
+</div>
+
+<script>
+    function SelLable(obj) {
+        var lab = obj.value;
+        obj.class = "sel_lable_btn_re";
+        //alert(lab);
+        $("#search_lable").val(lab);
+    }
+</script>

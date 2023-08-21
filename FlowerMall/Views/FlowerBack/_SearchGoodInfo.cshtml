@@ -1,0 +1,26 @@
+﻿@using FlowerMall.Models;
+@using PagedList.Mvc;
+@model MyPageList
+
+
+@foreach (var item in Model.goodlist)
+{
+    <tr>
+        <td style="width:300px;">@item.GoodName</td>
+        <td><img src="@item.GoodMainImg" style="width:120px;height:120px;" /></td>
+        <td>￥@item.GoodPrice</td>
+        <td>@item.GoodStock</td>
+        <td>@item.GoodMsales</td>
+        <td style="width:400px;">
+            <button type="button" class="btn btn-info" style="margin-right:20px;" onclick="GoodSet(@item.GoodID)">修改信息</button>
+            @if (item.GoodState == 2)
+            {
+                <button type="button" class="btn btn-success" onclick="GoodUp(@item.GoodID)">重新上架</button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-danger" onclick="GoodDel(@item.GoodID)">下架商品</button>
+            }
+        </td>
+    </tr>
+}

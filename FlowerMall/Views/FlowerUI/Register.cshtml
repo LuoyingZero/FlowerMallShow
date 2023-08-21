@@ -1,0 +1,186 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>注册账号</title>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/umd/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <link href="~/Content/FlowerUI/register.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="top">
+        <a href="/flowerUI/index" title="花语首页">
+            <img style="padding-top: 20px;" src="~/Images/花语logo.png" />
+        </a>
+    </div>
+    <div class="control">
+        <div class="req_tit">
+            <span style="font-size: 2em;">欢迎来到<a href="~/FlowerUI/index">花语</a></span><br />
+            <span style="font-size:18px;">已有账号？<a href="~/FlowerUI/login">前往登录</a></span>
+        </div>
+        <div class="req_img" >
+        </div>
+        <div class="req_form">
+            <form action="/flowerui/register" method="post" enctype="multipart/form-data" onsubmit="return RegisterVer()">
+                <p class="error_p">
+                    <span class="error_tit" id="error_tit_name"></span>
+                </p>
+                <p class="reg_p" id="input_area_name">
+                    <span class="span_fk">*</span><span class="reg_span">用户昵称</span>
+                    <input class="reg_input" id="UserName" name="UserName" oninput="value=value.replace(/[^\u4e00-\u9fa5]/g,'')" onblur="ReqName()" data-toggle="tooltip" data-placement="right" title="请输入2-6位的中文用户昵称" type="text" placeholder="请输入您的用户昵称" maxlength="6" />
+                </p>
+                <p class="error_p">
+                    <span class="error_tit" id="error_tit_tel"></span>
+                </p>
+                <p class="reg_p" id="input_area_tel">
+                    <span class="span_fk">*</span><span class="reg_span">手机号码</span>
+                    <input class="reg_input" id="UserTel" name="UserTel" oninput="value=value.replace(/[^0-9]+$/,'')" onblur="ReqTel()" data-toggle="tooltip" data-placement="right" title="手机号码将作为你的登录账号" type="text" placeholder="请输入您的手机号码" maxlength="11" />
+                </p>
+                <p class="error_p">
+                    <span class="error_tit" id="error_tit_pwd"></span>
+                </p>
+                <p class="reg_p" id="input_area_pwd">
+                    <span class="span_fk">*</span><span class="reg_span">登录密码</span>
+                    <input class="reg_input" id="UserPwd" name="UserLoginPwd" oninput="ReqPwdVer()" onblur="ReqPwd()" data-toggle="tooltip" data-placement="right" title="请输入6-16位的登录密码" type="password" placeholder="请输入您的登录密码" maxlength="16" />
+                </p>
+                <p class="error_p">
+                    <span class="error_tit" id="error_tit_reqpwd"></span>
+                </p>
+                <p class="reg_p" id="input_area_reqpwd">
+                    <span class="span_fk">*</span><span class="reg_span">重复密码</span>
+                    <input class="reg_input" id="UserReqPwd" type="password" onblur="ReqPwdVer()" data-toggle="tooltip" data-placement="right" title="请重复输入你的登录密码" placeholder="请确认您的登录密码" maxlength="16" />
+                </p>
+                <p class="error_p">
+                    <span class="error_tit" id="error_tit_paypwd"></span>
+                </p>
+                <p class="reg_p" id="input_area_paypwd">
+                    <span class="span_fk">*</span><span class="reg_span">支付密码</span>
+                    <input class="reg_input" id="UserPayPwd" name="UserPayPwd" onblur="ReqPayPwd()" oninput="value=value.replace(/[^0-9]+$/,'')" data-toggle="tooltip" data-placement="right" title="请输入6位纯数字的支付密码" type="password" placeholder="请输入您的支付密码" maxlength="6" />
+                </p>
+                <p class="error_p">
+                    <span class="error_tit"></span>
+                </p>
+                <p class="reg_p">
+                    <span class="reg_span">选择头像</span>
+                    <input class="reg_input " name="uploadFile" type="file" style="display: initial;" />
+                </p>
+                <p class="error_p">
+                    <span class="error_tit"></span>
+                </p>
+                <p class="reg_p" style="text-align:center;">
+                    <button class="reg_btn btn btn-info" style="width:100%;">立即注册</button>
+                </p>
+            </form>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        $(function () {
+            //alert(1)
+        })
+        function RegisterVer() {
+            if (ReqName() && ReqTel() && ReqPwd() && ReqPwdVer() && ReqPayPwd()) {
+                return true;
+            } else {
+                alert('数据不完整，无法注册')
+                return false;
+            }
+        }
+
+
+        //用户名验证
+        function ReqName() {
+            var name = $("#UserName").val();
+            var name_input = $("#input_area_name");
+            var name_error = $("#error_tit_name");
+            name_error.html("");
+            if (name.length < 2 || name.length > 6) {
+                name_input.css("border-color", "red");
+                name_error.html("请输入2-6位的中文用户昵称");
+                return false;
+            } else {
+                name_input.css("border-color", "green");
+                name_error.html("");
+                return true;
+            }
+        }
+        //手机号验证
+        function ReqTel() {
+            var name = $("#UserTel").val();
+            var name_input = $("#input_area_tel");
+            var name_error = $("#error_tit_tel");
+            name_error.html("");
+            if (name.length != 11) {
+                name_input.css("border-color", "red");
+                name_error.html("请输入11位的手机号");
+                return false;
+            } else {
+                name_input.css("border-color", "green");
+                name_error.html("");
+                return true;
+            }
+        }
+        //密码验证
+        function ReqPwd() {
+            var name = $("#UserPwd").val();
+            var name_input = $("#input_area_pwd");
+            var name_error = $("#error_tit_pwd");
+            name_error.html("");
+            if (name.length < 6 || name.length > 16) {
+                name_input.css("border-color", "red");
+                name_error.html("请输入6-16位的登录密码");
+                return false;
+            } else {
+                name_input.css("border-color", "green");
+                name_error.html("");
+                return true;
+            }
+        }
+        //确认密码验证
+        function ReqPwdVer() {
+            var name = $("#UserPwd").val();
+            var reqname = $("#UserReqPwd").val();
+            var name_input = $("#input_area_reqpwd");
+            var name_error = $("#error_tit_reqpwd");
+            name_error.html("");
+            if (name != reqname) {
+                name_input.css("border-color", "red");
+                name_error.html("两次密码不一致，请检查你的输入");
+                return false;
+            } else {
+                name_input.css("border-color", "green");
+                name_error.html("");
+                return true;
+            }
+        }
+        //支付密码验证
+        function ReqPayPwd() {
+            var name = $("#UserPayPwd").val();
+            var name_input = $("#input_area_paypwd");
+            var name_error = $("#error_tit_paypwd");
+            name_error.html("");
+            if (name.length != 6) {
+                name_input.css("border-color", "red");
+                name_error.html("请输入6位的数字支付密码");
+                return false;
+            } else {
+                name_input.css("border-color", "green");
+                name_error.html("");
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>
